@@ -2,7 +2,7 @@
 """Generate /l/<id>/index.html for every live or pending listing, plus sitemap.xml, robots.txt, manifest.
 Run from the repo root: python3 scripts/build_site.py
 Set SITE_DOMAIN (and SITE_PATH for a subpath deploy) in env or edit DOMAIN below."""
-import json, os, re, shutil, html, sys
+import json, os, re, shutil, html, sys, hashlib
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,6 +15,19 @@ TILES = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 TILE_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 SCHEMA_TYPE = {'farm': 'LocalBusiness', 'market': 'LocalBusiness', 'seafood': 'FoodEstablishment', 'store': 'GroceryStore'}
 e = lambda s: html.escape(str(s if s is not None else ''), quote=True)
+
+# GitHub Pages serves every file with max-age=600. Without a version stamp, a
+# visitor who loaded the site in the ten minutes before a deploy gets new HTML
+# with cached CSS and JS, which renders as an unstyled page. The stamp is a hash
+# of the asset bytes, so it only changes when the assets actually change.
+def asset_version():
+    h = hashlib.sha256()
+    for name in ('assets/style.css', 'assets/app.js'):
+        with open(os.path.join(ROOT, name), 'rb') as fh:
+            h.update(fh.read())
+    return h.hexdigest()[:8]
+
+VER = asset_version()
 
 listings = json.load(open(os.path.join(ROOT, 'data/listings.json')))
 outdir = os.path.join(ROOT, 'l')
@@ -51,7 +64,7 @@ for l in listings:
 <meta name="theme-color" content="#0b0b0d">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="{PATH}/assets/style.css">
+<link rel="stylesheet" href="{PATH}/assets/style.css?v={VER}">
 <script type="application/ld+json">{ld}</script>
 </head><body>
 <div class="app">
@@ -97,8 +110,15 @@ open(os.path.join(ROOT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding
 open(os.path.join(ROOT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n')
 open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps({'name': 'Gulf Coast Farm: Mobile & Baldwin', 'short_name': 'Gulf Coast', 'start_url': PATH + '/', 'display': 'standalone', 'background_color': '#0b0b0d', 'theme_color': '#0b0b0d', 'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
 
-# stamp the domain into index.html canonical
+# stamp the domain into index.html canonical, and the asset version into both pages
 idx = os.path.join(ROOT, 'index.html')
 s = re.sub(r'<link rel="canonical" href="[^"]*">', f'<link rel="canonical" href="{BASE}/">', open(idx).read())
 open(idx, 'w').write(s)
-print(f'wrote {len(urls) - 2} listing pages, sitemap with {len(urls)} urls, domain {DOMAIN}')
+
+for name in ('index.html', 'submit.html'):
+    fp = os.path.join(ROOT, name)
+    t = open(fp).read()
+    t = re.sub(r'(assets/(?:style\.css|app\.js))(\?v=[0-9a-f]+)?', rf'\1?v={VER}', t)
+    open(fp, 'w').write(t)
+
+print(f'wrote {len(urls) - 2} listing pages, sitemap with {len(urls)} urls, domain {DOMAIN}, assets v{VER}')
