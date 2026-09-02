@@ -4,25 +4,31 @@
 <meta name="description" content="Long-running roadside farm market on Highway 59 in Loxley with produce, pies, breads, and canned goods. Address and hours to be confirmed with the market.">
 <link rel="canonical" href="https://gulfcoastfarm.com/l/burris-farm-market/">
 <meta property="og:title" content="Burris Farm Market"><meta property="og:description" content="Long-running roadside farm market on Highway 59 in Loxley with produce, pies, breads, and canned goods. Address and hours to be confirmed with the market.">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="/assets/style.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "GroceryStore", "name": "Burris Farm Market", "description": "Long-running roadside farm market on Highway 59 in Loxley with produce, pies, breads, and canned goods. Address and hours to be confirmed with the market.", "url": "https://gulfcoastfarm.com/l/burris-farm-market/", "address": {"@type": "PostalAddress", "streetAddress": "3100 S Hickory St", "addressLocality": "Loxley", "addressRegion": "AL", "postalCode": "36551", "addressCountry": "US"}, "geo": {"@type": "GeoCoordinates", "latitude": 30.61833, "longitude": -87.75306}}</script>
 </head><body>
+<div class="app">
+<header class="mast">
+<p class="wordmark"><a class="dest" href="/">Gulf Coast Farm</a><span class="region">Mobile &amp; Baldwin</span></p>
+<a class="addlink" href="/?id=burris-farm-market">Open on the board</a>
+</header>
 <main class="page">
-<header class="top"><h1><a href="/" style="text-decoration:none;color:inherit">Gulf Coast Farm <span>Mobile &amp; Baldwin</span></a></h1><a class="add" href="/?id=burris-farm-market">Open on the map</a></header>
 <h1 class="big">Burris Farm Market</h1>
-<p class="lede"><span class="dot store"></span> Farm store in Loxley, Baldwin County <span class="pendingtag">unverified</span></p>
-<div class="notice">We have not confirmed this listing is current. Call or check their page before you drive out.</div>
+<p class="lede"><span class="code">STOR</span> Farm store in Loxley, Baldwin County <span class="tag-unconfirmed">Unconfirmed</span></p>
+<div class="notice"><b>Unconfirmed</b>We have not confirmed this listing is current. Call or check their page before you drive out.</div>
 <div class="detail" style="padding:0">
 <p>Long-running roadside farm market on Highway 59 in Loxley with produce, pies, breads, and canned goods. Address and hours to be confirmed with the market.</p>
 <div class="actions"><a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=3100 S Hickory St, Loxley, AL 36551" target="_blank" rel="noopener">Directions</a></div>
 <div id="mini" class="miniMap"></div>
-<dl>
-<dt>Offers</dt><dd>Not listed</dd>
+<dl class="cells">
+<div><dt class="lbl">Offers</dt><dd>Not listed</dd></div>
+<div><dt class="lbl">Hours</dt><dd class="amber">Not published, call ahead</dd></div>
 
 
-
-<dt>Address</dt><dd>3100 S Hickory St, Loxley, AL 36551</dd>
+<div><dt class="lbl">Address</dt><dd>3100 S Hickory St, Loxley, AL 36551</dd></div>
 
 </dl>
 <p><a href="/submit.html?id=burris-farm-market&mode=update">Own this listing or see an error? Send an update.</a></p>
@@ -30,10 +36,11 @@
 </div>
 </main>
 <footer class="site">Gulf Coast Farm is a free community project for Mobile and Baldwin County. <a href="/">All farms and markets</a> &middot; <a href="/submit.html">Add a listing</a></footer>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 var m=L.map('mini',{scrollWheelZoom:false}).setView([30.61833,-87.75306],13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(m);
-L.marker([30.61833,-87.75306],{icon:L.divIcon({className:'',html:'<div class="pin store "></div>',iconSize:[18,18],iconAnchor:[9,9]})}).addTo(m);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(m);
+L.marker([30.61833,-87.75306],{icon:L.divIcon({className:'',html:'<div class="pin unconfirmed ">STOR</div>',iconSize:[30,18],iconAnchor:[15,9]})}).addTo(m);
 </script>
 </body></html>
