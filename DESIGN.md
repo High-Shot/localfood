@@ -1,213 +1,218 @@
 # Design
 
-Recorded from the built world after the Departures Board redesign, September 2026.
-Ground truth is `assets/style.css`, `assets/app.js`, and `scripts/build_site.py`.
-Product truth lives in PRODUCT.md; this file owns visual and interaction decisions only.
+Recorded from the built world, September 2026. Ground truth is `assets/style.css`,
+`assets/app.js`, and `scripts/build_site.py`. Product truth lives in PRODUCT.md;
+this file owns visual and interaction decisions only.
 
 ## World
 
-A rail concourse split-flap departures board. Matte black flap faces in a brushed
-steel frame, one condensed sans in caps for destinations and column labels, and a
-single amber that carries exactly one meaning: this changes your plans.
+Roadside signage pulled most of the way toward the category standard, laid out
+map-first. The map is the canvas and listings float over it.
 
-The board was chosen over the roll's assigned direction by the user. It won on
-product clarity: a ruled table with fixed columns is the clearest way to compare
-places on hours, distance, and what is ready. Its known weakness is audience
-identification, since nobody in Baldwin County reads a concourse board. That
-weakness is managed by keeping the *structure* borrowed and the *language* native:
-column labels and codes are board vocabulary, every sentence of prose is Gulf Coast
-Farm's own plain voice. No airport metaphor appears in copy.
+The lineage is Alabama roadside produce signage: painted colour at region scale,
+condensed caps for wayfinding, square-cornered plates for controls. What it
+deliberately does not take from that lineage is the costume. **No wood grain, no
+distressed paint, no hand-lettering, no chalkboard, no wheat or tractor, no cream
+ground, no serif display.** The discipline is in the geometry and the colour
+blocking, not in pretending to be a physical object.
 
-Visitor mode: **Operate**. The visitor is completing a task, so scanability,
-consistent affordances, and familiar controls outrank expression. Brand lives in
-the precision of the cells, not in decoration.
+The category standard supplies the rest: a familiar list of cards, a normal search
+field, a map anyone can operate without instruction.
 
-## Color
+Visitor mode: **Operate**. Someone is deciding where to drive on Saturday.
+Scanability and familiar controls outrank expression.
 
-Strategy: **Restrained**, which is the Operate floor. One accent, one alarm,
-everything else steel and flap black.
+This direction was pinned by the user over the concept roll, after two earlier
+builds (a split-flap departures board, then a scrolling list-and-map page) were
+rejected as too technical and too static respectively.
 
-| Token | Value | Role |
-|---|---|---|
-| `--flap` | `#0b0b0d` | Row face, page ground |
-| `--board` | `#131417` | Field behind rows, panel ground |
-| `--rule` | `#23262a` | Hairline between rows, columns, cells |
-| `--steel-edge` | `#3d4147` | Frame highlight |
-| `--letter` | `#f2f2f2` | Primary text. 17.6:1 on flap |
-| `--steel-light` | `#a7aaaf` | Secondary text. 8.4:1 on flap |
-| `--steel-mid` | `#5b5e63` | **Rules and borders only.** 3.0:1, never text |
-| `--amber` | `#ffb000` | Selected, active, and "needs your attention". 10.7:1 |
-| `--amber-deep` | `#c98a0a` | Amber borders on dark |
-| `--alarm` | `#ff5c4d` | Error text only. 6.4:1 |
+## Colour
 
-Dark ground is chosen from the use scene, not from category habit. The visitor is
-on a phone in Gulf Coast daylight; white-on-black at 17.6:1 is the highest contrast
-available, and the board's own tradition is built for reading across a bright room.
+Strategy: **Functional.** Colour is not decoration here; it carries the listing
+taxonomy. Every value below clears 4.5:1 on white.
 
-**Amber discipline.** Amber means one thing. It marks the selected filter, the
-active row and pin, an unconfirmed listing, and the absence of published hours. It
-is never used for emphasis, decoration, or hierarchy. Adding a second meaning to
-amber breaks the system.
+| Token | Value | Contrast | Role |
+|---|---|---|---|
+| `--paper` | `#f1f2ee` | — | Page ground, cool not cream |
+| `--card` | `#fff` | — | Cards, panels, form fields |
+| `--ink` | `#14171a` | 15.9:1 | Primary text, plate borders |
+| `--muted` | `#5a6169` | 5.9:1 | Secondary text |
+| `--rule` | `#dde0da` | — | Hairlines |
+| `--head` | `#14603e` | 8.0:1 | Highway guide green. Sign band, primary buttons |
+| `--head-deep` | `#0d4b30` | 10.3:1 | Links, hover |
+| `--ready` | `#d93a14` | 4.6:1 | **Ready this month, and nothing else** |
+| `--ready-deep` | `#a82c0d` | 7.2:1 | The same signal as text |
+| `--t-farm` | `#2f7d4e` | 5.0:1 | Farm |
+| `--t-market` | `#8e3a6b` | 7.1:1 | Farmers market |
+| `--t-seafood` | `#1c6e8c` | 5.7:1 | Seafood dock |
+| `--t-store` | `#3c4650` | 9.6:1 | Farm store |
+| `--mark` | `#e8a317` | — | U-pick badge border only, never text |
 
-Listing types are **not** encoded in color. Four types plus a verified state exceeds
-what one accent can carry honestly, so type is a four-letter code in a fixed cell:
-`FARM`, `MKT`, `SEA`, `STOR`. The same codes appear on rows and on map pins.
+**Red discipline.** `--ready` means one thing: this place has something in season
+right now. The month heading, the season plates, the product tags, and the ring
+around in-season pins. Giving red a second meaning would destroy the only
+act-now signal on the page.
+
+**Why market is plum and not amber.** Amber measured 3.04:1 on white, below the
+floor for an 11px label. Every ochre alternative also sat within ~27° of
+`--ready`, muddying the act-now signal. Plum measures 7.1:1 and sits 47° away.
+Muscadines being purple is a happy accident, not the reason.
+
+**Why type also has a shape.** Simulating deuteranopia and protanopia, no
+five-colour scheme held up: amber landed 11 units from red, plum 10 from green.
+On cards the word label carries the meaning and colour reinforces it. On map pins
+there is no label, so shape carries it instead: **circle farm, square market,
+diamond seafood dock, pill farm store**, with a red ring for ready-this-month.
+That system works in greyscale. Do not remove the shapes and leave only colour.
 
 ## Type
 
-One family: **Archivo** variable (`wdth` 62–125, `wght` 400–800), loaded from Google
-Fonts. Fallback `'Archivo Narrow', 'Helvetica Neue', Arial, sans-serif`. Operate
-surfaces do not need display and body pairing; a well-tuned grotesque carries
-headings, labels, buttons, data, and prose.
+Two families, each with one job.
 
-Two lettering roles, both in the same family:
+- **Big Shoulders Display** (600/700/800) — a real wayfinding face. Wordmark,
+  month, section labels, buttons, "Directions". Condensed caps, tracked
+  0.07–0.13em. **Never body copy.** The moment it sets a sentence, the whole
+  thing tips into costume.
+- **Public Sans** (400–700) — the US government's public-interface face. Every
+  word the visitor actually reads: names, descriptions, hours, towns, forms.
 
-- `.dest` — destinations and place names. `wdth` 78, weight 650, uppercase,
-  `letter-spacing: 0.055em`. This is how a flap is cut: condensed enough for fixed
-  cells, tracked open enough to read at distance.
-- `.lbl` — column labels and field names. `wdth` 88, weight 600, uppercase,
-  `letter-spacing: 0.15em`, 10.5px.
-
-**Caps discipline.** Caps are for destinations, codes, labels, and controls. All
-descriptive content, listing descriptions, hours, towns, product lists, footnotes,
-runs in sentence case. Setting body prose in caps would trade the board's legibility
-for its costume.
-
-Fixed rem-anchored scale, never fluid: month 30/23px, detail h2 28/23px, page
-heading 34/27px, row name 15.5/15px, body 15px, secondary 13px, labels 10.5px.
-Prose measure capped at 68–72ch.
+Fixed scale, never fluid: wordmark 33/26px, month 26/20px, detail h2 23px, page
+h1 31/25px, card h3 16.5/16px, body 16px, secondary 13px, labels 10.5px.
 
 ## Composition
 
-The board is the page. The map is a companion, not a peer.
+The map is the page. Everything else floats on it.
 
-- **Masthead** — brushed steel gradient with an inset top highlight, the wordmark
-  left, one amber-outlined action right.
-- **Season strip** — the month set large, one line of orientation, and the products
-  actually ready this month as flap chips. This strip is the product's most
-  distinctive fact and it sits above everything except the wordmark.
-- **Control rail** — steel gradient. Search, Near me, and (below 1040px) the
-  Board/Map switch on one row; county and type filters on the next. The eighteen
-  product categories live behind a `What they sell` disclosure with a live count,
-  so they never occupy the first viewport.
-- **Deck** — `minmax(0, 1fr)` board plus a 460px sticky map rail at ≥1040px, single
-  column below.
+- **Sign band** — slim, guide green, 4px ink rule beneath, wordmark left and one
+  action right. Kept short so the map gets the room.
+- **Stage** — the map fills all remaining viewport, absolutely positioned.
+- **Panel** — floats at left, `clamp(340px, 27vw, 440px)`, holding the season
+  strip, search, filters, count and cards. Translucent with a backdrop blur.
+- **Legend** — floats bottom right, keyed to the pin shapes.
 
-### Columns
+**Blur is load-bearing, not decorative.** The panel sits on a live map and has to
+stay readable over arbitrary tile content. This is the one case where blur is the
+right tool rather than an effect.
 
-Fixed, and they never move; only their contents change.
+**`fitTo()` pads the map fit by the panel's own width** (`offsetWidth + 32`) on
+desktop and by the sheet height on phones. Without that padding, every pin in
+western Mobile County hides underneath the panel and the map looks half empty.
+If the panel geometry ever changes, this changes with it.
 
-`TYPE (46px) · PLACE (1.55fr) · TOWN (0.8fr) · READY NOW (1.4fr) · HOURS (1fr) · MILES (62px)`
-
-The MILES column persists as an em-dash before the visitor shares a location. A
-column that appears and disappears is not a board.
-
-### Row ranking
+### Ranking
 
 Rows are ranked by whether you can actually go:
 
-1. Distance ascending, when the visitor has shared a location.
-2. Otherwise: places with something ready this month, then confirmed listings, then
-   alphabetical.
+1. Distance ascending, when the visitor shares a location.
+2. Otherwise: places with something ready this month, then confirmed listings,
+   then alphabetical.
 
-Alphabetical-only ordering is the thing this redesign replaced. It made the first
-screen a phone book.
+Plain alphabetical is what two redesigns ago did, and it made the first screen a
+phone book.
 
-### Narrow layout
+### Phone
 
-At ≤720px the cells stay but their priority changes, which is what a board does on
-a narrow platform display. Three grid areas: code, place with miles, town with the
-call-ahead flag, then ready-now on its own line. Free-text hours are dropped from
-the row, since at that width they truncate to nothing useful; the actionable part
-(that no hours are published) stays as `CALL AHEAD` in amber, and the full hours
-appear in the detail.
+The panel becomes a bottom sheet at ≤860px, with three detents (16 / 54 / 88 dvh)
+driven by `--sheet`. Drag the handle or tap to cycle; the map invalidates size and
+re-fits on each change. Opening a detail from the collapsed detent raises the
+sheet automatically.
+
+Two things on that breakpoint are not cosmetic:
+
+- The zoom control owns the top right, so **the legend moves to the top left**.
+- The sheet covers the map's bottom-right corner, where Leaflet puts its
+  attribution. **OSM attribution is a licence requirement**, so
+  `.leaflet-bottom.leaflet-right` is lifted to `calc(var(--sheet) - 4px)` and
+  animates with the sheet. Do not remove this.
 
 ## Components
 
-Every interactive element ships default, hover, focus, active, and disabled.
+Every interactive element ships default, hover, focus, active and disabled.
 
-- **`.flapchip`** — a physical tile with an `::after` hairline across its middle,
-  the way a real flap is split. Selected fills amber with flap-black text.
-- **`.btn-steel`** — 40px control with a `.lamp` indicator dot. Amber pulsing lamp
-  means locating.
-- **`.code`** — the type tile, split like a flap, amber when its row is active.
-- **`.btn` / `.btn.primary`** — 2px radius, caps, tracked. Primary is amber.
-- **`.cells`** — flex-wrap field cells with clipped 1px rules, so a short final row
-  leaves no dead region.
-- **States** — skeleton flap rows with a staggered sweep while loading; a
-  `No services match` empty state with a working Clear filters button; a
-  `The board did not load` alarm state when the fetch fails.
+- **`.plate`** — square-cornered filter control, ink border, fills ink when
+  pressed. Season plates use the red border and fill instead.
+- **`.card`** — white, borders in its type colour on hover and when active. Used
+  as a `<button>` in the app and as an `<a>` on static pages; both styled here.
+- **`.cardgrid`** — two columns on document pages, one in the panel.
+- **`.btn` / `.btn.primary`** — primary is guide green.
+- **`.cells`** — flex-wrap field cells with clipped 1px rules, so a short final
+  row leaves no dead region.
+- **States** — skeleton cards while loading, a "Nothing matches" empty state with
+  a working Clear filters button, and a "The listings did not load" error state.
 
-Radius is 2–3px throughout. This is sheet metal and card stock, not soft UI.
-
-### Detail chrome on narrow viewports
-
-Below 1040px, `openDetail` puts `.detail-open` on `#app`, which hides the season
-strip and both filter rails. An open detail owns the viewport; those controls act
-on a board the visitor is no longer looking at, and they cost roughly 185px that
-the listing name, its ready-this-month notice, and Directions need. The search
-field and Board/Map switch stay, because typing in search calls `update()`, which
-returns to the board, making it the fastest way out. `backToBoard` removes the
-class. Desktop keeps all its chrome; there is room for it.
+Radius is 3–4px throughout. Plates and buttons are 3px, cards 4px.
 
 ## Motion
 
-One authored moment, and nothing else.
+There is no page-load choreography. The visitor is in a task.
 
-**The flip.** When the visible set of rows changes, the first fourteen destinations
-resolve character by character through a scrambled glyph set: 18ms per character,
-20ms stagger per row, roughly 700ms at worst. Settling characters carry `.flipping`
-in amber and drop it as they land. It is driven by a single shared
-`requestAnimationFrame` loop, capped at fourteen rows, and it only fires when the
-result ids actually differ from the last render.
-
-Everything else is 120–160ms state feedback on `cubic-bezier(0.16, 1, 0.3, 1)`.
-There is no page-load choreography; the visitor is in a task.
-
-`prefers-reduced-motion` collapses the cascade to an instant text set and reduces
-every transition and animation to 1ms.
+- Map flies to a listing on select, 0.6s, skipped under reduced motion.
+- Sheet detents animate height over 280ms on `cubic-bezier(.16,1,.3,1)`.
+- Everything else is 130–150ms state feedback.
+- `prefers-reduced-motion` reduces every transition and animation to 1ms.
 
 ## Map
 
-- **Tiles.** Standard OpenStreetMap, darkened with
-  `filter: invert(1) grayscale(1) brightness(1.15) contrast(0.95)` applied to
-  `.leaflet-tile-pane` only. Markers, controls, and attribution live in other panes
-  and stay untouched. This deliberately avoids a keyed provider: CARTO's `dark_all`
-  now watermarks every tile with `API KEY REQUIRED`, and a static site with no
-  backend should not depend on an account.
-- **Pins** are flap tiles carrying the type code, 30×18px. Below zoom 11 a
-  `.lowzoom` class on the map container reduces them to 11px lamps: filled white for
-  confirmed, hollow amber-bordered for unconfirmed. Eighty-one code tiles fuse into
-  one mass at county scale otherwise.
-- **Hidden-map guard.** Below 1040px the map is `display: none` behind the
-  Board/Map switch, where Leaflet reports a zero-size container and `flyTo` /
-  `fitBounds` produce NaN LatLngs that throw. Every map call goes through
-  `mapReady()`. Removing that guard breaks row taps on phones.
+- **Tiles** are standard OpenStreetMap with
+  `filter: saturate(0.28) brightness(1.05) contrast(0.92)` on `.leaflet-tile-pane`
+  only. Markers, controls and attribution live in other panes and stay untouched.
+  Full greyscale was tested and rejected: it flattens Mobile Bay into the land,
+  and the water line matters when ten listings are docks.
+- **No keyed tile provider.** CARTO's Positron and dark_all both watermark
+  `API KEY REQUIRED` now, and Stadia needs a key plus a domain allowlist. A static
+  site with no backend should not depend on an account. If traffic ever justifies
+  it, the upgrade is self-hosted Protomaps.
+- **`mapReady()` guards every Leaflet call.** Below 860px the map can be
+  zero-sized, where `flyTo` and `fitBounds` produce NaN LatLngs that throw and
+  abort their caller. Removing that guard breaks card taps on phones.
+- **Pages with a map must load Leaflet's own stylesheet.** `head(leaflet=True)`
+  in the generator does this. It was once omitted, and the mini map on all 81
+  listing pages rendered its tiles absolutely against the page body.
 
 ## Honesty commitments
 
-These are visual rules that exist to serve PRODUCT.md's disclosure principle. They
-are not decoration and should not be traded away for tidiness.
+Visual rules that exist to serve PRODUCT.md's disclosure principle. They are not
+decoration and should not be traded away for tidiness.
 
-- Unconfirmed listings show an amber `Unconfirmed` flap on the row and an amber
-  notice block in the detail. They are never hidden by default; the visitor opts in.
-- Missing hours read `Call ahead` in amber, never blank and never invented.
-- Withheld addresses read `(exact location not published)`; their pins are dimmed.
+- Unconfirmed listings show an `Unconfirmed` badge on the card and a bordered
+  notice in the detail. They are never hidden by default; the visitor opts in.
+- Missing hours read "Hours not posted — call first" in `--ready-deep`, never
+  blank and never invented.
+- Withheld addresses read "(exact location not published)" and their pins are
+  dashed.
 - Source and last-checked date appear at the foot of every detail and listing page.
 
-## Static pages
+## The static surface
 
-`/l/<id>/` pages and `submit.html` share this stylesheet and the same masthead,
-`.page`, `.big`, `.lede`, `.detail`, `.cells`, and `footer.site` vocabulary. The
-listing name is the sole `h1`; the masthead is a `p.wordmark`.
+`scripts/build_site.py` generates everything a crawler or an AI assistant sees:
 
-`scripts/build_site.py` emits them. Its URL structure, canonical tags, schema.org
-JSON-LD, sitemap, and robots output are fixed by the user and were not changed by
-this redesign. Rebuild with:
+| Path | What it is |
+|---|---|
+| `/l/<id>/` | one page per listing. **URL structure is fixed** |
+| `/in/<town>/` | every listing in one town |
+| `/what/<product>/` | every listing offering one product category |
+| `/in-season/` | what is ready this month |
+| `index.html` | a crawlable copy of the card list, injected between `<!--STATIC-->` markers |
+
+These pages use `body.doc`, which releases the fixed-height shell and lets the
+page scroll. They share the sign band, `.page`, `.big`, `.lede`, `.cells`,
+`.cardgrid` and `footer.site`. The listing name is the sole `h1`.
+
+**The homepage injection is progressive enhancement, not cloaking.** The static
+cards are the same content, in the same order, with the same words the app
+renders; `renderList()` simply replaces them with interactive versions on boot.
+If you ever change what the app shows, change `card()` in the generator to match.
+
+Rebuild with:
 
 ```
 SITE_DOMAIN=gulfcoastfarm.com SITE_PATH= python3 scripts/build_site.py
 ```
+
+That script also hashes `style.css` and `app.js` and stamps `?v=<hash>` onto every
+asset link. GitHub Pages serves everything with `max-age=600`, so without the
+stamp a visitor who loaded the site shortly before a deploy gets new HTML with
+cached CSS and renders an unstyled page. This actually happened. Do not remove it.
 
 ## Constraints this world must respect
 
@@ -216,8 +221,11 @@ JSON file, Leaflet from CDN. Anything added here has to survive those.
 
 ## Known open items
 
-- The steel frame is a CSS gradient, not a real brushed-metal material. The
-  quality-bar reference renders actual metal; this is the one fidelity gap.
-- Free-text `hours` values are unparsed. An open/closed-now signal would be the
-  single biggest improvement to the board's ranking, and needs structured hours in
-  the data before it is possible.
+- Free-text `hours` are unparsed, so there is no open-now signal, and the listing
+  schema cannot publish `openingHours` without emitting invalid data. Fixing it
+  needs structured hours in `listings.json`, not a design change. Highest-value
+  work remaining, and it now unblocks SEO as well as ranking.
+- No Open Graph image, so social and AI previews are text only.
+- Clicking a card flies the map and opens the detail, but the reverse discovery
+  path — hovering a pin to highlight its card — does not exist.
+- The panel has no resize handle on desktop; width is fixed by `clamp()`.
