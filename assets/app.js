@@ -36,7 +36,7 @@
 
   var state = {
     q: '', county: 'all', type: null, cats: [], season: null, near: null,
-    hidePending: false, active: null, data: [], monthProducts: []
+    hidePending: false, active: null, hover: null, data: [], monthProducts: []
   };
   var map, markers = {}, hereMarker = null, catsOpen = false, PANEL_SHELL = '';
 
@@ -142,6 +142,8 @@
       });
       m.bindPopup('<b>' + esc(l.name) + '</b>' + esc(TYPE_LABEL[l.type]) + ' &middot; ' + esc(l.city));
       m.on('click', function () { openDetail(l.id); });
+      m.on('mouseover', function () { if (!narrow()) markHover(l.id); });
+      m.on('mouseout', function () { if (!narrow()) markHover(null); });
       markers[l.id] = m;
     });
   }
@@ -163,6 +165,23 @@
       var el = markers[k].getElement();
       if (el && el.firstChild) el.firstChild.classList.toggle('active', k === id);
     }
+  }
+
+  function markHover(id) {
+    state.hover = id;
+    var list = $('#plist');
+    if (!list) return;
+    var cards = list.querySelectorAll('.card'), i, c;
+    for (i = 0; i < cards.length; i++) {
+      c = cards[i];
+      c.classList.toggle('is-hover', c.dataset.id === id);
+    }
+    if (!id) return;
+    var card = list.querySelector('.card[data-id="' + id + '"]');
+    if (!card) return;
+    var box = list.getBoundingClientRect(), r = card.getBoundingClientRect();
+    if (r.top < box.top) list.scrollTop += r.top - box.top - 8;
+    else if (r.bottom > box.bottom) list.scrollTop += r.bottom - box.bottom + 8;
   }
 
   /* ---------------------------------------------------------------- render */
@@ -214,6 +233,8 @@
     listEl.innerHTML = html;
     listEl.querySelectorAll('.card').forEach(function (b) {
       b.addEventListener('click', function () { openDetail(b.dataset.id); });
+      b.addEventListener('mouseenter', function () { if (!narrow()) markActive(b.dataset.id); });
+      b.addEventListener('mouseleave', function () { if (!narrow()) markActive(state.active); });
     });
     listEl.scrollTop = 0;
     syncMarkers(rows, refit);

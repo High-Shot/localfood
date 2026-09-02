@@ -226,7 +226,7 @@ body.doc .shell { height: auto; min-height: 100dvh; }
   padding: 11px 13px; cursor: pointer;
   transition: border-color 130ms var(--ease), box-shadow 130ms var(--ease);
 }
-.card:hover { border-color: var(--tc); box-shadow: 0 3px 12px rgba(20,23,26,.10); }
+.card:hover, .card.is-hover { border-color: var(--tc); box-shadow: 0 3px 12px rgba(20,23,26,.10); }
 .card.is-active { border-color: var(--tc); box-shadow: 0 0 0 1px var(--tc), 0 3px 12px rgba(20,23,26,.12); }
 .t-farm { --tc: var(--t-farm); }
 .t-market { --tc: var(--t-market); }

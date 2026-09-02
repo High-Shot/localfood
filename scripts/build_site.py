@@ -91,7 +91,10 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}">
 <meta property="og:type" content="website"><meta property="og:url" content="{canon}">
 <meta property="og:site_name" content="Gulf Coast Farm">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{BASE}/assets/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Map of Mobile and Baldwin County, Alabama with every local farm, market and seafood dock pinned">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="geo.region" content="US-AL"><meta name="geo.placename" content="Mobile and Baldwin County, Alabama">
 <meta name="theme-color" content="#14603e">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
