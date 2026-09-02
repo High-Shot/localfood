@@ -1,0 +1,15 @@
+{
+ "name": "Local Food Map: Mobile & Baldwin",
+ "short_name": "Local Food",
+ "start_url": "/localfood/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#2c5f49",
+ "icons": [
+  {
+   "src": "assets/icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml"
+  }
+ ]
+}

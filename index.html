@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Local Food Map: farms, markets and seafood in Mobile and Baldwin County</title>
+<meta name="description" content="Find local farms, farmers markets, u-pick fields, honey, beef, eggs, and Gulf seafood in Mobile and Baldwin County, Alabama. Free, community maintained.">
+<link rel="canonical" href="https://high-shot.github.io/localfood/">
+<meta property="og:title" content="Local Food Map: Mobile and Baldwin County">
+<meta property="og:description" content="Every local farm, market, and seafood dock we can find, on one map.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2c5f49">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Local Food Map <span>Mobile &amp; Baldwin</span></h1>
+    <a class="add" href="submit.html">Add a listing</a>
+  </header>
+  <div class="controls">
+    <div class="search">
+      <label for="q" class="visually-hidden" hidden>Search</label>
+      <input id="q" type="search" placeholder="Search: honey, satsumas, Foley, beef&hellip;" autocomplete="off">
+      <button id="clearQ" aria-label="Clear search">&times;</button>
+    </div>
+    <div class="chips" id="countyChips"></div>
+    <div>
+      <div class="chips-label">In season this month</div>
+      <div class="chips small" id="seasonChips"></div>
+    </div>
+    <div class="chips small" id="catChips"></div>
+  </div>
+  <div id="map" role="region" aria-label="Map of local farms and markets"></div>
+  <div class="results" id="results" aria-live="polite"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

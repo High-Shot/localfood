@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add or update a listing: Local Food Map</title>
+<meta name="description" content="Farms, farmers markets, seafood sellers, and farm stores in Mobile and Baldwin County: add your listing to the Local Food Map for free.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main class="page">
+  <header class="top"><h1><a href="./" style="text-decoration:none;color:inherit">Local Food Map <span>Mobile &amp; Baldwin</span></a></h1></header>
+  <h1 class="big" id="heading">Add your farm, market, or seafood business</h1>
+  <p class="lede">Free. A person reviews every submission before it goes on the map, usually within a few days. You can update or remove your listing any time with this same form.</p>
+
+  <form id="f" novalidate>
+    <input type="hidden" name="listing_id" id="listing_id">
+    <div class="hp"><label>Leave this empty<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>
+
+    <div class="field">
+      <label for="mode">What do you want to do?</label>
+      <select id="mode" name="mode">
+        <option value="new">Add a new listing</option>
+        <option value="update">Update an existing listing</option>
+        <option value="remove">Remove a listing</option>
+      </select>
+    </div>
+
+    <fieldset>
+      <legend>The business</legend>
+      <div class="field"><label for="name">Name <span class="hint">as customers know it</span></label><input type="text" id="name" name="name" required></div>
+      <div class="field"><label for="type">Type</label>
+        <select id="type" name="type"><option value="farm">Farm or ranch</option><option value="market">Farmers market</option><option value="seafood">Seafood: dock, boat, or oyster farm</option><option value="store">Farm store or produce stand</option></select></div>
+      <div class="field"><label for="description">Tell people what you do <span class="hint">two or three sentences. What you raise or grow, how long you've been at it, anything that makes you different.</span></label><textarea id="description" name="description"></textarea></div>
+      <div class="field"><label>What do you offer?</label>
+        <div class="checks" id="cats"></div></div>
+      <div class="field"><label for="products">Specific products <span class="hint">comma separated: grass-fed beef, satsumas, raw honey, brown eggs</span></label><input type="text" id="products" name="products"></div>
+      <div class="field"><label for="how">How can people buy from you?</label>
+        <div class="checks" id="how">
+          <label><input type="checkbox" name="how_to_buy" value="On-farm pickup"> On-farm pickup</label>
+          <label><input type="checkbox" name="how_to_buy" value="U-pick"> U-pick</label>
+          <label><input type="checkbox" name="how_to_buy" value="Farmers market"> Farmers market booth</label>
+          <label><input type="checkbox" name="how_to_buy" value="Local delivery"> Local delivery</label>
+          <label><input type="checkbox" name="how_to_buy" value="Online orders"> Online orders</label>
+          <label><input type="checkbox" name="how_to_buy" value="CSA or subscription"> CSA or subscription</label>
+          <label><input type="checkbox" name="how_to_buy" value="Retail stores"> Retail stores</label>
+          <label><input type="checkbox" name="how_to_buy" value="Wholesale"> Wholesale</label>
+        </div></div>
+      <div class="field"><label for="sells_at">Which farmers markets do you sell at? <span class="hint">optional</span></label><input type="text" id="sells_at" name="sells_at"></div>
+      <div class="field"><label for="hours">Hours or season <span class="hint">for markets: days, times, and season dates</span></label><input type="text" id="hours" name="hours" placeholder="Sat 8 to noon, May through July"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Where</legend>
+      <div class="field"><label for="address">Street address</label><input type="text" id="address" name="address"></div>
+      <div class="field"><label for="city">City</label><input type="text" id="city" name="city" required></div>
+      <div class="field"><label for="county">County</label>
+        <select id="county" name="county"><option value="Baldwin">Baldwin</option><option value="Mobile">Mobile</option></select></div>
+      <div class="field"><label>Show the exact address on the map?</label>
+        <div class="checks" style="grid-template-columns:1fr">
+          <label><input type="radio" name="pin_precision" value="exact" checked> Yes, show my address and a pin at it</label>
+          <label><input type="radio" name="pin_precision" value="town"> No, show only my town. People will contact me for the location.</label>
+        </div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contact and links <span class="hint">everything here is shown publicly. Leave blank anything you don't want listed.</span></legend>
+      <div class="field"><label for="phone">Phone</label><input type="tel" id="phone" name="phone"></div>
+      <div class="field"><label for="email">Public email</label><input type="email" id="email" name="email"></div>
+      <div class="field"><label for="website">Website</label><input type="url" id="website" name="website" placeholder="https://"></div>
+      <div class="field"><label for="facebook">Facebook page</label><input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/"></div>
+      <div class="field"><label for="instagram">Instagram</label><input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/"></div>
+      <div class="field"><label for="tiktok">TikTok</label><input type="url" id="tiktok" name="tiktok"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>You <span class="hint">not shown publicly. Used only to confirm the listing.</span></legend>
+      <div class="field"><label for="contact_name">Your name</label><input type="text" id="contact_name" name="contact_name" required></div>
+      <div class="field"><label for="contact_email">Your email</label><input type="email" id="contact_email" name="contact_email" required></div>
+      <div class="field"><label for="notes">Anything else? <span class="hint">for removals or corrections, say what changed</span></label><textarea id="notes" name="notes"></textarea></div>
+      <div class="field"><label style="font-weight:400;display:flex;gap:8px;align-items:flex-start"><input type="checkbox" name="consent" required style="margin-top:4px"> I am authorized to list this business and agree that the information above may be shown publicly on this map.</label></div>
+    </fieldset>
+
+    <button class="btn primary" type="submit" id="send">Send for review</button>
+    <div class="status" id="status"></div>
+  </form>
+</main>
+<footer class="site">Local Food Map is a free community project. Listings are submitted by businesses and public directories; we check them but cannot guarantee hours or availability. <a href="./">Back to the map</a></footer>
+
+<script>
+(function () {
+  // Where the form posts. Leave empty to fall back to email (works on GitHub Pages with no backend).
+  // Examples: 'https://formspree.io/f/XXXX' or a Cloudflare Worker URL that runs functions/api/submit.js
+  const SUBMIT_URL = '';
+  const CONTACT_EMAIL = 'barcus@high-shot.com';
+  const CATS = [['beef','Beef'],['pork','Pork'],['chicken','Chicken'],['lamb','Lamb'],['eggs','Eggs'],['dairy','Dairy'],['honey','Honey'],['seafood','Seafood'],['vegetables','Vegetables'],['fruit','Fruit'],['berries','Berries'],['citrus','Satsumas & citrus'],['nuts','Pecans & peanuts'],['upick','U-pick'],['flowers','Flowers'],['baked','Baked goods'],['pantry','Jams, sauces & pantry'],['plants','Plants']];
+  document.getElementById('cats').innerHTML = CATS.map(([v,t]) => `<label><input type="checkbox" name="categories" value="${v}"> ${t}</label>`).join('');
+  const p = new URLSearchParams(location.search);
+  if (p.get('id')) { document.getElementById('listing_id').value = p.get('id'); }
+  if (p.get('mode')) { document.getElementById('mode').value = p.get('mode'); }
+  const modeSel = document.getElementById('mode');
+  function syncMode() {
+    const h = document.getElementById('heading');
+    h.textContent = { new: 'Add your farm, market, or seafood business', update: 'Update a listing', remove: 'Remove a listing' }[modeSel.value];
+    document.getElementById('name').required = modeSel.value !== 'remove' || !p.get('id');
+    document.getElementById('city').required = modeSel.value === 'new';
+  }
+  modeSel.addEventListener('change', syncMode); syncMode();
+
+  const form = document.getElementById('f'), status = document.getElementById('status'), send = document.getElementById('send');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.className = 'status';
+    if (!form.reportValidity()) return;
+    const fd = new FormData(form);
+    const body = {};
+    for (const [k, v] of fd.entries()) {
+      if (k === 'categories' || k === 'how_to_buy') { (body[k] = body[k] || []).push(v); } else { body[k] = v; }
+    }
+    body.products = (body.products || '').split(',').map((s) => s.trim()).filter(Boolean);
+    body.submitted_at = new Date().toISOString();
+    body.page = location.href;
+    send.disabled = true; send.textContent = 'Sending';
+    if (!SUBMIT_URL) {
+      const subject = '[Local Food Map] ' + (body.mode || 'new') + ': ' + (body.name || body.listing_id || '');
+      const lines = Object.entries(body).filter(([k]) => k !== 'company_website').map(([k, v]) => k + ': ' + (Array.isArray(v) ? v.join(', ') : v));
+      location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+      status.className = 'status ok';
+      status.innerHTML = 'Your email app should open with the details filled in. Send it and we will review it. If nothing opened, email <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.';
+      send.disabled = false; send.textContent = 'Send for review';
+      return;
+    }
+    try {
+      const r = await fetch(SUBMIT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!r.ok) throw new Error(await r.text());
+      status.className = 'status ok';
+      status.innerHTML = 'Sent. We will look it over and email you when it is on the map (or if we have a question).';
+      form.reset(); syncMode();
+    } catch (err) {
+      status.className = 'status err';
+      status.innerHTML = 'It did not send. Please email the details to <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a> and we will add it by hand.';
+    }
+    send.disabled = false; send.textContent = 'Send for review';
+  });
+})();
+</script>
+</body>
+</html>

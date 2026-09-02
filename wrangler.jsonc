@@ -1,0 +1,8 @@
+{
+  "name": "localfood-map",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-01",
+  "assets": { "directory": "./", "binding": "ASSETS", "not_found_handling": "404-page", "html_handling": "auto-trailing-slash" },
+  "vars": { "AIRTABLE_TABLE": "Submissions" }
+  // Set AIRTABLE_TOKEN and AIRTABLE_BASE as secrets: npx wrangler secret put AIRTABLE_TOKEN
+}
