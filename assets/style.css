@@ -25,15 +25,16 @@ button { font: inherit; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
 /* ---------- App shell ---------- */
-.app { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 46vh 1fr; height: 100dvh; overflow: hidden; }
+.app { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto 46vh 1fr; height: 100dvh; overflow: hidden; }
 .app > * { min-width: 0; }
 @media (min-width: 900px) {
   .app { grid-template-columns: var(--sidebar) 1fr; grid-template-rows: auto 1fr; }
   .app > header { grid-column: 1; }
   .app > .controls { grid-column: 1; }
-  .app > #map { grid-column: 2; grid-row: 1 / span 3; }
+  .app > .blurb { grid-column: 1; }
+  .app > #map { grid-column: 2; grid-row: 1 / span 4; }
   .app > .results { grid-column: 1; }
-  .app { grid-template-rows: auto auto 1fr; }
+  .app { grid-template-rows: auto auto auto 1fr; }
 }
 
 header.top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px 6px; }
@@ -41,7 +42,8 @@ header.top h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0
 header.top h1 span { color: var(--marsh); }
 header.top .add { font-size: 14px; font-weight: 600; text-decoration: none; padding: 6px 10px; border: 1.5px solid var(--marsh); border-radius: 999px; color: var(--marsh); white-space: nowrap; }
 header.top .add:hover { background: var(--marsh); color: #fff; }
-@media (max-width: 520px) { header.top h1 { font-size: 17px; } header.top .add { font-size: 13px; padding: 5px 9px; } }
+.blurb { margin: 0; padding: 2px 16px 0; font-size: 13px; line-height: 1.35; color: var(--ink-soft); max-width: 60ch; }
+@media (max-width: 520px) { header.top h1 { font-size: 17px; } header.top .add { font-size: 13px; padding: 5px 9px; } .blurb { font-size: 12px; padding: 2px 16px 0; } }
 
 .controls { padding: 4px 16px 8px; display: grid; gap: 8px; }
 .search { position: relative; }
