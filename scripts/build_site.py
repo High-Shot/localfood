@@ -9,8 +9,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMAIN = os.environ.get('SITE_DOMAIN', 'localfood.example.com')
 PATH = os.environ.get('SITE_PATH', '').rstrip('/')  # e.g. '/localfood' for a GitHub Pages project site, '' for a custom domain
 BASE = f'https://{DOMAIN}{PATH}'
-TYPE_LABEL = {'farm': 'Farm', 'market': 'Farmers market', 'seafood': 'Seafood', 'store': 'Farm store'}
-TYPE_CODE = {'farm': 'FARM', 'market': 'MKT', 'seafood': 'SEA', 'store': 'STOR'}
+TYPE_LABEL = {'farm': 'Farm', 'market': 'Farmers market', 'seafood': 'Seafood dock', 'store': 'Farm store'}
 TILES = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 TILE_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 SCHEMA_TYPE = {'farm': 'LocalBusiness', 'market': 'LocalBusiness', 'seafood': 'FoodEstablishment', 'store': 'GroceryStore'}
@@ -53,7 +52,7 @@ for l in listings:
         'sameAs': [u for u in [l['website'], l['facebook'], l['instagram'], l['tiktok']] if u] or None,
     }
     ld = json.dumps({k: v for k, v in ld.items() if v is not None})
-    pending = '' if l['status'] == 'live' else '<div class="notice"><b>Unconfirmed</b>We have not confirmed this listing is current. Call or check their page before you drive out.</div>'
+    pending = '' if l['status'] == 'live' else '<div class="notice warn"><b>Unconfirmed</b>We have not confirmed this listing is current. Call or check their page before you drive out.</div>'
     dirs = f"https://www.google.com/maps/dir/?api=1&destination={e(addr if exact else '')}" if exact else None
     page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,44 +60,44 @@ for l in listings:
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{BASE}/l/{e(l['id'])}/">
 <meta property="og:title" content="{e(l['name'])}"><meta property="og:description" content="{e(desc)}">
-<meta name="theme-color" content="#0b0b0d">
+<meta name="theme-color" content="#14603e">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="{PATH}/assets/style.css?v={VER}">
 <script type="application/ld+json">{ld}</script>
-</head><body>
-<div class="app">
-<header class="mast">
-<p class="wordmark"><a class="dest" href="{PATH}/">Gulf Coast Farm</a><span class="region">Mobile &amp; Baldwin</span></p>
-<a class="addlink" href="{PATH}/?id={e(l['id'])}">Open on the board</a>
-</header>
+</head><body class="doc">
+<div class="shell">
+<header class="band"><div class="inner">
+<p class="wordmark"><a href="{PATH}/">Gulf Coast Farm<span class="co">Mobile &amp; Baldwin County, Alabama</span></a></p>
+<a class="add" href="{PATH}/?id={e(l['id'])}">Open on the map &rarr;</a>
+</div></header>
 <main class="page">
 <h1 class="big">{e(l['name'])}</h1>
-<p class="lede"><span class="code">{TYPE_CODE[l['type']]}</span> {e(TYPE_LABEL[l['type']])} in {e(l['city'])}, {e(l['county'])} County{' <span class="tag-unconfirmed">Unconfirmed</span>' if l['status'] != 'live' else ''}</p>
+<p class="lede"><span class="kind t-{e(l['type'])}"><i class="sw"></i>{e(TYPE_LABEL[l['type']])}</span> in {e(l['city'])}, {e(l['county'])} County{' <span class="unconf">Unconfirmed</span>' if l['status'] != 'live' else ''}</p>
 {pending}
 <div class="detail" style="padding:0">
 {('<p>' + e(l['description']) + '</p>') if l['description'] else ''}
 <div class="actions">{a('Directions', dirs)}{('<a class="btn" href="tel:' + e(''.join(ch for ch in l['phone'] if ch.isdigit() or ch == '+')) + '">Call</a>') if l['phone'] else ''}{a('Website', l['website'])}{a('Facebook', l['facebook'])}{a('Instagram', l['instagram'])}{a('TikTok', l['tiktok'])}{('<a class="btn" href="mailto:' + e(l['email']) + '">Email</a>') if l['email'] else ''}</div>
 <div id="mini" class="miniMap"></div>
 <dl class="cells">
-<div><dt class="lbl">Offers</dt><dd>{e(offers or 'Not listed')}</dd></div>
-<div><dt class="lbl">Hours</dt><dd{'' if l['hours'] else ' class="amber"'}>{e(l['hours']) if l['hours'] else 'Not published, call ahead'}</dd></div>
-{('<div><dt class="lbl">How to buy</dt><dd>' + e(', '.join(l['how_to_buy'])) + '</dd></div>') if l['how_to_buy'] else ''}
-{('<div><dt class="lbl">Sells at</dt><dd>' + e(l['sells_at']) + '</dd></div>') if l['sells_at'] else ''}
-<div><dt class="lbl">Address</dt><dd>{e(addr)}{'' if exact else ' (exact location not published)'}</dd></div>
-{('<div><dt class="lbl">Phone</dt><dd>' + e(l['phone']) + '</dd></div>') if l['phone'] else ''}
+<div><dt>Offers</dt><dd>{e(offers or 'Not listed')}</dd></div>
+<div><dt>Hours</dt><dd{'' if l['hours'] else ' class="flag"'}>{e(l['hours']) if l['hours'] else 'Not published, call ahead'}</dd></div>
+{('<div><dt>How to buy</dt><dd>' + e(', '.join(l['how_to_buy'])) + '</dd></div>') if l['how_to_buy'] else ''}
+{('<div><dt>Sells at</dt><dd>' + e(l['sells_at']) + '</dd></div>') if l['sells_at'] else ''}
+<div><dt>Address</dt><dd>{e(addr)}{'' if exact else ' (exact location not published)'}</dd></div>
+{('<div><dt>Phone</dt><dd>' + e(l['phone']) + '</dd></div>') if l['phone'] else ''}
 </dl>
 <p><a href="{PATH}/submit.html?id={e(l['id'])}&mode=update">Own this listing or see an error? Send an update.</a></p>
 <p class="fine">Source: {e(l['source'])}. Last checked {e(l['last_verified'])}. Hours and availability change with the season; confirm before you go.</p>
 </div>
 </main>
-<footer class="site">Gulf Coast Farm is a free community project for Mobile and Baldwin County. <a href="{PATH}/">All farms and markets</a> &middot; <a href="{PATH}/submit.html">Add a listing</a></footer>
+<footer class="site"><div class="inner">Gulf Coast Farm is a free community project for Mobile and Baldwin County. <a href="{PATH}/">All farms and markets</a> &middot; <a href="{PATH}/submit.html">Add a listing</a></div></footer>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 var m=L.map('mini',{{scrollWheelZoom:false}}).setView([{l['lat']},{l['lng']}],{13 if exact else 10});
 L.tileLayer('{TILES}',{{maxZoom:19,attribution:'{TILE_ATTR}'}}).addTo(m);
-L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div class="pin {'' if l['status'] == 'live' else 'unconfirmed'} {'' if exact else 'town'}">{TYPE_CODE[l['type']]}</div>',iconSize:[30,18],iconAnchor:[15,9]}})}}).addTo(m);
+L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div class="dot {e(l['type'])} {'' if l['status'] == 'live' else 'unconfirmed'}"></div>',iconSize:[16,16],iconAnchor:[8,8]}})}}).addTo(m);
 </script>
 </body></html>"""
     d = os.path.join(outdir, l['id'])
@@ -108,7 +107,7 @@ L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div clas
 
 open(os.path.join(ROOT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{u}</loc><lastmod>{date.today().isoformat()}</lastmod></url>\n' for u in urls) + '</urlset>\n')
 open(os.path.join(ROOT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n')
-open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps({'name': 'Gulf Coast Farm: Mobile & Baldwin', 'short_name': 'Gulf Coast', 'start_url': PATH + '/', 'display': 'standalone', 'background_color': '#0b0b0d', 'theme_color': '#0b0b0d', 'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
+open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps({'name': 'Gulf Coast Farm: Mobile & Baldwin', 'short_name': 'Gulf Coast', 'start_url': PATH + '/', 'display': 'standalone', 'background_color': '#f1f2ee', 'theme_color': '#14603e', 'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
 
 # stamp the domain into index.html canonical, and the asset version into both pages
 idx = os.path.join(ROOT, 'index.html')

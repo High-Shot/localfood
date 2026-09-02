@@ -7,108 +7,79 @@
 <meta name="description" content="Find local farms, farmers markets, u-pick fields, honey, beef, eggs, and Gulf seafood in Mobile and Baldwin County, Alabama. Free, community maintained.">
 <link rel="canonical" href="https://gulfcoastfarm.com/">
 <meta property="og:title" content="Gulf Coast Farm: Mobile and Baldwin County">
-<meta property="og:description" content="Every local farm, market, and seafood dock we can find, on one board.">
+<meta property="og:description" content="Every local farm, market, and seafood dock we can find, on one map.">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0b0b0d">
+<meta name="theme-color" content="#14603e">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/style.css?v=a568b225">
+<link rel="stylesheet" href="assets/style.css?v=122970e5">
 </head>
 <body>
 <!--
-  THESIS: A departures board for local food. Rows are places, ranked by whether
-  you can actually go, and the board repaints when the season or a filter
-  changes. It refuses the split-screen map-plus-white-cards directory.
-  OWN-WORLD: Matte flap black rows in a brushed steel frame; one condensed
-  Archivo in caps for destinations and column labels; amber is the only accent
-  and carries exactly one meaning, "this changes your plans"; four-letter
-  service codes replace coloured dots, on rows and on map pins alike.
-  STORY: The visitor sees what is in season this month, scans a ruled table of
-  places against fixed columns, and leaves with a name, its hours, and
-  directions.
-  FIRST VIEWPORT: Steel masthead, then the month set large with the products
-  ready right now as flap chips, then one search field with LIST/MAP, then the
-  column header and the first rows. No stacked filter chips.
-  FORM: Split-flap concourse board (challenger, chosen by the user over the
-  assigned grounded direction), staged as a live ranked board. Seed b5f9ee06.
+  THESIS: A map of local food where the map is the page. Listings float over it
+  and are ranked by whether you can actually go. It refuses the split-screen
+  half-map-half-cards directory the category always ships.
+  OWN-WORLD: Highway guide green sign band over a desaturated map; condensed
+  Big Shoulders caps for wayfinding only, Public Sans for everything read;
+  colour carries the listing type and shape carries it again; enamel red means
+  one thing only, ready this month.
+  STORY: The visitor sees what is in season, scans places over the map they
+  will drive, and leaves with a name, its hours and directions.
+  FIRST VIEWPORT: Slim green band, map edge to edge, floating panel at left
+  holding the month, search, filters and the first cards.
+  FORM: Roadside signage pulled toward the category standard, map-first, user
+  pinned over the concept roll. Seed b5f9ee06.
   FINISH: unreviewed and undocumented is unfinished; this build ends with the
   finish review, the verdict, and DESIGN.md
 -->
-<div class="app" id="app">
+<div class="shell">
 
-  <header class="mast">
-    <h1 class="wordmark">
-      <a class="dest" href="./">Gulf Coast Farm</a>
-      <span class="region">Mobile &amp; Baldwin</span>
-    </h1>
-    <a class="addlink" href="submit.html">Add a listing</a>
+  <header class="band">
+    <div class="inner">
+      <h1 class="wordmark"><a href="./">Gulf Coast Farm<span class="co">Mobile &amp; Baldwin County, Alabama</span></a></h1>
+      <a class="add" href="submit.html">Add a listing &rarr;</a>
+    </div>
   </header>
 
-  <section class="season" id="season" aria-labelledby="seasonMonth">
-    <div class="head">
-      <h2 class="month" id="seasonMonth">&nbsp;</h2>
-      <p class="note" id="seasonNote">Free and community built. Every farm, market, and seafood dock we can find in Mobile and Baldwin County.</p>
+  <div class="stage">
+    <div id="map" role="region" aria-label="Map of local farms, markets and seafood docks"></div>
+
+    <div class="legend" aria-hidden="true">
+      <span><i class="farm"></i>Farm</span>
+      <span><i class="market"></i>Farmers market</span>
+      <span><i class="seafood"></i>Seafood dock</span>
+      <span><i class="store"></i>Farm store</span>
+      <span><i class="rdy"></i>Ready this month</span>
     </div>
-    <div class="flaps" id="seasonFlaps"></div>
-  </section>
 
-  <div class="controls">
-    <div class="row1">
-      <div class="search">
-        <label class="vh" for="q">Search farms, markets and products</label>
-        <input id="q" type="search" placeholder="Honey, satsumas, Foley, beef" autocomplete="off">
-        <button class="clear" id="clearQ" type="button" aria-label="Clear search">&times;</button>
-      </div>
-      <button class="btn-steel" id="nearBtn" type="button" aria-pressed="false"><span class="lamp"></span>Near me</button>
-      <div class="viewswitch" role="group" aria-label="Board or map">
-        <button class="btn-steel" id="viewList" type="button" aria-pressed="true">Board</button>
-        <button class="btn-steel" id="viewMap" type="button" aria-pressed="false">Map</button>
-      </div>
-    </div>
-    <div class="filters" id="filters"></div>
-    <div class="filters" id="catFilters" hidden></div>
-  </div>
-
-  <div class="deck">
-    <main class="board" id="board" aria-label="Places">
-      <div class="board-head">
-        <div class="tally" id="tally" aria-live="polite">Loading the board</div>
-        <label class="toggle" id="hideWrap" hidden>
-          <input type="checkbox" id="hidePending"> <span id="hideLabel">Hide unconfirmed</span>
-        </label>
-      </div>
-      <div class="cols" id="cols" aria-hidden="true">
-        <span class="lbl">Type</span>
-        <span class="lbl">Place</span>
-        <span class="lbl">Town</span>
-        <span class="lbl">Ready now</span>
-        <span class="lbl">Hours</span>
-        <span class="lbl num">Miles</span>
-      </div>
-      <ul class="rows skeleton" id="rows">
-        <li></li><li></li><li></li><li></li><li></li><li></li>
-      </ul>
-    </main>
-
-    <aside class="maprail" id="maprail">
-      <div class="mapframe">
-        <div class="cap">
-          <span class="lbl">Mobile &amp; Baldwin County</span>
-          <span class="lbl" id="mapCount"></span>
+    <section class="panel" id="panel" aria-label="Places">
+      <button class="grab" id="grab" aria-label="Resize the list"></button>
+      <div class="phead">
+        <div class="season">
+          <h2 class="month" id="seasonMonth">&nbsp;</h2>
+          <p class="lede" id="seasonLede">Free and community built.</p>
         </div>
-        <div id="map" role="region" aria-label="Map of local farms and markets"></div>
+        <div class="plates" id="seasonPlates"></div>
+        <div class="searchrow">
+          <div class="search">
+            <label class="vh" for="q">Search farms, markets and products</label>
+            <input id="q" type="search" placeholder="Honey, satsumas, Foley, beef" autocomplete="off">
+            <button class="clear" id="clearQ" type="button" aria-label="Clear search">&times;</button>
+          </div>
+          <button class="near" id="nearBtn" type="button" aria-pressed="false">Near me</button>
+        </div>
+        <div class="plates" id="filters"></div>
+        <div class="plates" id="catFilters"></div>
       </div>
-    </aside>
+      <div class="count" id="count" aria-live="polite">Loading</div>
+      <div class="plist" id="plist">
+        <div class="skel"><div></div><div></div><div></div><div></div></div>
+      </div>
+    </section>
   </div>
-
-  <footer class="site">
-    Gulf Coast Farm is a free community project. Listings come from businesses and public
-    directories; we check them but cannot guarantee hours or availability.
-    <a href="submit.html">Add or correct a listing</a>.
-  </footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="assets/app.js?v=a568b225"></script>
+<script src="assets/app.js?v=122970e5"></script>
 </body>
 </html>
