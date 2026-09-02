@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Add or update a listing: Local Food Map</title>
-<meta name="description" content="Farms, farmers markets, seafood sellers, and farm stores in Mobile and Baldwin County: add your listing to the Local Food Map for free.">
+<title>Add or update a listing: Gulf Coast Farm</title>
+<meta name="description" content="Farms, farmers markets, seafood sellers, and farm stores in Mobile and Baldwin County: add your listing to Gulf Coast Farm for free.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <main class="page">
-  <header class="top"><h1><a href="./" style="text-decoration:none;color:inherit">Local Food Map <span>Mobile &amp; Baldwin</span></a></h1></header>
+  <header class="top"><h1><a href="./" style="text-decoration:none;color:inherit">Gulf Coast Farm <span>Mobile &amp; Baldwin</span></a></h1></header>
   <h1 class="big" id="heading">Add your farm, market, or seafood business</h1>
   <p class="lede">Free. A person reviews every submission before it goes on the map, usually within a few days. You can update or remove your listing any time with this same form.</p>
 
@@ -85,7 +85,7 @@
     <div class="status" id="status"></div>
   </form>
 </main>
-<footer class="site">Local Food Map is a free community project. Listings are submitted by businesses and public directories; we check them but cannot guarantee hours or availability. <a href="./">Back to the map</a></footer>
+<footer class="site">Gulf Coast Farm is a free community project. Listings are submitted by businesses and public directories; we check them but cannot guarantee hours or availability. <a href="./">Back to the map</a></footer>
 
 <script>
 (function () {
@@ -122,7 +122,7 @@
     body.page = location.href;
     send.disabled = true; send.textContent = 'Sending';
     if (!SUBMIT_URL) {
-      const subject = '[Local Food Map] ' + (body.mode || 'new') + ': ' + (body.name || body.listing_id || '');
+      const subject = '[Gulf Coast Farm] ' + (body.mode || 'new') + ': ' + (body.name || body.listing_id || '');
       const lines = Object.entries(body).filter(([k]) => k !== 'company_website').map(([k, v]) => k + ': ' + (Array.isArray(v) ? v.join(', ') : v));
       location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
       status.className = 'status ok';

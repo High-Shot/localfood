@@ -58,7 +58,7 @@ export async function onRequestPost({ request, env }) {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: 'Local Food Map <noreply@' + new URL(request.url).hostname + '>', to: env.NOTIFY_EMAIL, subject: `[Local Food Map] ${fields.Mode}: ${fields.Name || fields['Listing ID']}`, text: JSON.stringify(fields, null, 2) }),
+      body: JSON.stringify({ from: 'Gulf Coast Farm <noreply@' + new URL(request.url).hostname + '>', to: env.NOTIFY_EMAIL, subject: `[Gulf Coast Farm] ${fields.Mode}: ${fields.Name || fields['Listing ID']}`, text: JSON.stringify(fields, null, 2) }),
     }).catch(() => {});
   }
   return text('ok', 200);

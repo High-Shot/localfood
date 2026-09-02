@@ -1,8 +1,8 @@
-# Local Food Map: Mobile & Baldwin County
+# Gulf Coast Farm: Mobile & Baldwin County
 
 Static site. No framework, no build step for the app itself, no map API key. Leaflet + OpenStreetMap tiles, one JSON file of listings.
 
-Hosted on GitHub Pages: https://high-shot.github.io/localfood/
+Hosted on GitHub Pages: https://gulfcoastfarm.com/
 
 The vendor form has no backend on GitHub Pages. With `SUBMIT_URL` empty in `submit.html` it opens the visitor's email app with the submission prefilled and addressed to `CONTACT_EMAIL`. Set `SUBMIT_URL` to a Formspree endpoint or a Cloudflare Worker running `functions/api/submit.js` (Airtable) when you want submissions to land somewhere automatically.
 

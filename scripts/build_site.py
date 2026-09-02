@@ -50,7 +50,7 @@ for l in listings:
 <script type="application/ld+json">{ld}</script>
 </head><body>
 <main class="page">
-<header class="top"><h1><a href="{PATH}/" style="text-decoration:none;color:inherit">Local Food Map <span>Mobile &amp; Baldwin</span></a></h1><a class="add" href="{PATH}/?id={e(l['id'])}">Open on the map</a></header>
+<header class="top"><h1><a href="{PATH}/" style="text-decoration:none;color:inherit">Gulf Coast Farm <span>Mobile &amp; Baldwin</span></a></h1><a class="add" href="{PATH}/?id={e(l['id'])}">Open on the map</a></header>
 <h1 class="big">{e(l['name'])}</h1>
 <p class="lede"><span class="dot {e(l['type'])}"></span> {e(TYPE_LABEL[l['type']])} in {e(l['city'])}, {e(l['county'])} County{' <span class="pendingtag">unverified</span>' if l['status'] != 'live' else ''}</p>
 {pending}
@@ -70,7 +70,7 @@ for l in listings:
 <p class="fine">Source: {e(l['source'])}. Last checked {e(l['last_verified'])}. Hours and availability change with the season; confirm before you go.</p>
 </div>
 </main>
-<footer class="site">Local Food Map is a free community project for Mobile and Baldwin County. <a href="{PATH}/">All farms and markets</a> &middot; <a href="{PATH}/submit.html">Add a listing</a></footer>
+<footer class="site">Gulf Coast Farm is a free community project for Mobile and Baldwin County. <a href="{PATH}/">All farms and markets</a> &middot; <a href="{PATH}/submit.html">Add a listing</a></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 var m=L.map('mini',{{scrollWheelZoom:false}}).setView([{l['lat']},{l['lng']}],{13 if exact else 10});
@@ -85,7 +85,7 @@ L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div clas
 
 open(os.path.join(ROOT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{u}</loc><lastmod>{date.today().isoformat()}</lastmod></url>\n' for u in urls) + '</urlset>\n')
 open(os.path.join(ROOT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n')
-open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps({'name': 'Local Food Map: Mobile & Baldwin', 'short_name': 'Local Food', 'start_url': PATH + '/', 'display': 'standalone', 'background_color': '#ffffff', 'theme_color': '#2c5f49', 'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
+open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps({'name': 'Gulf Coast Farm: Mobile & Baldwin', 'short_name': 'Gulf Coast', 'start_url': PATH + '/', 'display': 'standalone', 'background_color': '#ffffff', 'theme_color': '#2c5f49', 'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
 
 # stamp the domain into index.html canonical
 idx = os.path.join(ROOT, 'index.html')

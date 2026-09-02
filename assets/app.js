@@ -1,4 +1,4 @@
-/* Local Food Map: Mobile + Baldwin County. Plain JS, Leaflet, one JSON file. */
+/* Gulf Coast Farm: Mobile + Baldwin County. Plain JS, Leaflet, one JSON file. */
 (function () {
   'use strict';
 
