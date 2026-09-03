@@ -35,10 +35,10 @@
   var narrow = function () { return window.innerWidth <= 860; };
 
   var state = {
-    q: '', county: 'all', type: null, cats: [], season: null, near: null,
+    q: '', type: null, cats: [], season: null, near: null,
     hidePending: false, active: null, hover: null, data: [], monthProducts: []
   };
-  var map, markers = {}, hereMarker = null, catsOpen = false, PANEL_SHELL = '';
+  var map, markers = {}, hereMarker = null, PANEL_SHELL = '';
 
   /* ---------------------------------------------------------------- season */
 
@@ -69,7 +69,6 @@
   }
 
   function matches(l) {
-    if (state.county !== 'all' && (l.county + '|' + (l.state || 'AL')) !== state.county) return false;
     if (state.type && l.type !== state.type) return false;
     if (state.hidePending && l.status !== 'live') return false;
     for (var i = 0; i < state.cats.length; i++) {
@@ -77,7 +76,7 @@
     }
     if (state.season && l.products.indexOf(state.season) === -1) return false;
     if (state.q) {
-      var hay = [l.name, l.city, l.description, l.products.join(' '),
+      var hay = [l.name, l.city, l.county, l.description, l.products.join(' '),
                  l.categories.join(' '), TYPE_LABEL[l.type]].join(' ').toLowerCase();
       var w = state.q.toLowerCase().split(/\s+/);
       for (var j = 0; j < w.length; j++) if (w[j] && hay.indexOf(w[j]) === -1) return false;
@@ -325,7 +324,7 @@
   }
 
   function resetAll() {
-    state.q = ''; state.county = 'all'; state.type = null; state.cats = [];
+    state.q = ''; state.type = null; state.cats = [];
     state.season = null; state.hidePending = false;
     var q = $('#q');
     if (q) { q.value = ''; q.parentElement.classList.remove('has-text'); }
@@ -347,7 +346,7 @@
       return state.data.some(function (l) { return l.products.indexOf(p) > -1; });
     });
     if (!have.length) { el.innerHTML = ''; $('#seasonLede').textContent = 'Every farm, market and seafood dock we can find.'; return; }
-    $('#seasonLede').innerHTML = '<b>Ready right now.</b> Tap one to filter.';
+    $('#seasonLede').innerHTML = '<b>In season now.</b> Tap one to filter.';
     el.innerHTML = have.map(function (p) { return plate(p, 'data-season', p, state.season === p, 'season'); }).join('');
     el.querySelectorAll('[data-season]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -360,33 +359,21 @@
   function buildFilters() {
     var f = $('#filters');
     if (!f) return;
-    var html = '';
-    [['all', 'All areas'], ['Baldwin|AL', 'Baldwin, AL'], ['Mobile|AL', 'Mobile, AL'], ['Escambia|AL', 'Escambia, AL'], ['Escambia|FL', 'Escambia, FL'], ['Santa Rosa|FL', 'Santa Rosa, FL']].forEach(function (p) {
-      html += plate(p[1], 'data-county', p[0], state.county === p[0]);
-    });
-    TYPES.forEach(function (p) { html += plate(p[1], 'data-type', p[0], state.type === p[0]); });
-    html += '<button class="plate" type="button" id="catToggle" aria-expanded="' + catsOpen + '">' +
-      'What they sell' + (state.cats.length ? ' (' + state.cats.length + ')' : '') +
-      ' ' + (catsOpen ? '\u25B4' : '\u25BE') + '</button>';
-    f.innerHTML = html;
-
-    f.querySelectorAll('[data-county]').forEach(function (b) {
-      b.addEventListener('click', function () { state.county = b.dataset.county; buildFilters(); update(); });
-    });
+    f.innerHTML = TYPES.map(function (p) {
+      return plate(p[1], 'data-type', p[0], state.type === p[0]);
+    }).join('');
     f.querySelectorAll('[data-type]').forEach(function (b) {
       b.addEventListener('click', function () {
         state.type = state.type === b.dataset.type ? null : b.dataset.type;
         buildFilters(); update();
       });
     });
-    $('#catToggle').addEventListener('click', function () { catsOpen = !catsOpen; buildFilters(); });
     buildCats();
   }
 
   function buildCats() {
     var c = $('#catFilters');
     if (!c) return;
-    if (!catsOpen) { c.innerHTML = ''; return; }
     c.innerHTML = CATS.map(function (p) {
       return plate(p[1], 'data-cat', p[0], state.cats.indexOf(p[0]) > -1);
     }).join('');
@@ -397,6 +384,8 @@
         buildFilters(); update();
       });
     });
+    var ol = $('#offerLabel');
+    if (ol) ol.textContent = 'What they offer' + (state.cats.length ? ' (' + state.cats.length + ')' : '');
   }
 
   function wireNear() {
