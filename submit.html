@@ -98,7 +98,8 @@
 (function () {
   // Where the form posts. Leave empty to fall back to email (works on GitHub Pages with no backend).
   // Examples: 'https://formspree.io/f/XXXX' or a Cloudflare Worker URL that runs functions/api/submit.js
-  const SUBMIT_URL = '';
+  const SUBMIT_URL = 'https://api.web3forms.com/submit';
+  const ACCESS_KEY = '41180df8-bb01-41ec-a5a8-966b242383a9';
   const CONTACT_EMAIL = 'barcus@high-shot.com';
   const CATS = [['beef','Beef'],['pork','Pork'],['chicken','Chicken'],['lamb','Lamb'],['eggs','Eggs'],['dairy','Dairy'],['honey','Honey'],['seafood','Seafood'],['vegetables','Vegetables'],['fruit','Fruit'],['berries','Berries'],['citrus','Satsumas & citrus'],['nuts','Pecans & peanuts'],['upick','U-pick'],['flowers','Flowers'],['baked','Baked goods'],['pantry','Jams, sauces & pantry'],['plants','Plants']];
   document.getElementById('cats').innerHTML = CATS.map(([v,t]) => `<label><input type="checkbox" name="categories" value="${v}"> ${t}</label>`).join('');
@@ -137,8 +138,11 @@
       send.disabled = false; send.textContent = 'Send for review';
       return;
     }
+    delete body.company_website;
+    body.access_key = ACCESS_KEY;
+    body.subject = '[Gulf Coast Farm] ' + (body.mode || 'new') + ': ' + (body.name || body.listing_id || '');
     try {
-      const r = await fetch(SUBMIT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const r = await fetch(SUBMIT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) });
       if (!r.ok) throw new Error(await r.text());
       status.className = 'status ok';
       status.innerHTML = 'Sent. We will look it over and email you when it is on the map (or if we have a question).';
