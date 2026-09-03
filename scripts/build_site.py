@@ -107,17 +107,25 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 </head><body class="doc">
 <div class="shell">
 <header class="band"><div class="inner">
-<p class="wordmark"><a href="{PATH}/">Gulf Coast Farm<span class="co">Gulf Coast</span></a></p>
-<a class="add" href="{PATH}/submit.html">Add a farm &rarr;</a>
+<div class="brand"><p class="wordmark"><a href="{PATH}/">Gulf Coast Farm</a></p>
+<p class="tagline">Local farms, markets, and seafood, mapped.</p></div>
+<a class="add" href="{PATH}/submit.html">Add a farm or market &rarr;</a>
 </div></header>
 <main class="page">'''
+
+
+CONTACT_SCRIPT = ('<script>(function(){var a=document.getElementsByClassName("contactlink"),i;'
+                  'for(i=0;i<a.length;i++){a[i].href="mailto:"+a[i].getAttribute("data-u")+"@"+'
+                  'a[i].getAttribute("data-d")+"?subject=Gulf%20Coast%20Farm";}})();</script>')
 
 
 def tail():
     return f'''</main>
 <footer class="site"><div class="inner">Gulf Coast Farm is a free community project for the Gulf Coast.
 <a href="{PATH}/">Map of every listing</a> &middot; <a href="{PATH}/in-season/">In season now</a> &middot;
-<a href="{PATH}/submit.html">Add a farm</a></div></footer>
+<a href="{PATH}/about/">About</a> &middot; <a href="{PATH}/submit.html">Add a farm or market</a> &middot;
+<a class="contactlink" data-u="barcus" data-d="high-shot.com" href="#">Contact</a></div></footer>
+''' + CONTACT_SCRIPT + '''
 </div>
 </body></html>'''
 
@@ -144,7 +152,7 @@ def card(l, show_town=True):
                        for c in l['categories'][:2])
     hours = e(l['hours']) if l['hours'] else 'Hours not posted &mdash; call first'
     hours_cls = '' if l['hours'] else ' callfirst'
-    town = '%s, %s Co.' % (e(l['city']), e(l['county'])) if show_town else e(l['county']) + ' County'
+    town = '%s, %s County, %s' % (e(l['city']), e(l['county']), st(l)) if show_town else e(l['county']) + ' County, ' + st(l)
     upick = '<span class="upick">U-pick</span>' if 'upick' in l['categories'] else ''
     unconf = '<span class="unconf">Unconfirmed</span>' if l['status'] != 'live' else ''
     return ('<a class="card t-%s" href="%s/l/%s/">'
@@ -252,7 +260,7 @@ for l in listings:
     page = head(title, desc, canon, [biz, crumbs(trail)], leaflet=True)
     page += f'''<nav class="crumb"><a href="{PATH}/">All listings</a> &rsaquo; <a href="{PATH}/in/{slug(l['city'])}/">{e(l['city'])}</a></nav>
 <h1 class="big">{e(l['name'])}</h1>
-<p class="lede"><span class="kind t-{e(l['type'])}"><i class="sw"></i>{e(TYPE_LABEL[l['type']])}</span> in {e(l['city'])}, {e(l['county'])} County{' <span class="unconf">Unconfirmed</span>' if l['status'] != 'live' else ''}</p>
+<p class="lede"><span class="kind t-{e(l['type'])}"><i class="sw"></i>{e(TYPE_LABEL[l['type']])}</span> in {e(l['city'])}, {e(l['county'])} County, {st(l)}{' <span class="unconf">Unconfirmed</span>' if l['status'] != 'live' else ''}</p>
 {pending}
 {('<div class="notice ready"><b>Ready this month</b>' + e(', '.join(r)) + '</div>') if r else ''}
 <div class="detail" style="padding:0">
@@ -305,7 +313,7 @@ for city, rows in sorted(by_city.items()):
             f"Includes {kind_phrase}. Addresses, hours and phone numbers. Free and community maintained.")[:158]
     ready_here = sorted({p for x in rows for p in ready_now(x)})
     intro = (f"All {n} farms, farmers markets, seafood docks and farm stores we can find in "
-             f"<b>{e(city)}, {e(county)} County</b>. "
+             f"<b>{e(city)}, {e(county)} County, {state_ab}</b>. "
              + (f"Ready in {MONTH_NAME}: {e(', '.join(ready_here))}. " if ready_here else '')
              + "Hours change with the season, so call before you drive out.")
     other = [c for c in sorted(by_city) if c != city][:14]
@@ -351,6 +359,39 @@ extra = ('<p class="browse"><b>Browse by product</b> ' +
          ' &middot; '.join(f'<a href="{PATH}/in/{slug(c)}/">{e(c)}</a>' for c in sorted(by_city)) + '</p>')
 hub('in-season', title, desc, f'What is in season right now: {MONTH_NAME}', intro, season_rows,
     [('Gulf Coast Farm', BASE + '/'), ('In season now', f'{BASE}/in-season/')], extra)
+
+
+# ------------------------------------------------------------------ about page
+
+about_canon = f'{BASE}/about/'
+about_ld = [crumbs([('Gulf Coast Farm', BASE + '/'), ('About', about_canon)]),
+            {'@context': 'https://schema.org', '@type': 'AboutPage',
+             'name': 'About Gulf Coast Farm', 'url': about_canon}]
+about = head('About Gulf Coast Farm',
+             'How Gulf Coast Farm works, where it covers, and how every listing is sourced '
+             'and dated. A free, community-built map of local food in coastal Alabama and Northwest Florida.',
+             about_canon, about_ld)
+about += ('''<nav class="crumb"><a href="{P}/">All listings</a> &rsaquo; About</nav>
+<h1 class="big">About Gulf Coast Farm</h1>
+<p class="lede">A free map of where to buy food grown, raised, and caught close to home, across coastal Alabama and Northwest Florida.</p>
+<div class="prose">
+<p>Gulf Coast Farm is a map, not a store and not a delivery service. It shows farms, farmers markets, seafood docks, and farm stores: where each one is, when it is open, and how to get there. You find a place, then you go buy from it directly. Nothing is sold through this site, and there is no charge to be listed.</p>
+<h2>Where it covers</h2>
+<p>Coverage is stated as named counties, not a distance from wherever you happen to be standing, because the site does not track your location. Right now that is five counties: Mobile, Baldwin, and Escambia in Alabama, and Escambia and Santa Rosa in Florida. It started in Mobile and Baldwin and is working outward into the neighboring counties and the western Florida panhandle.</p>
+<h2>Where the listings come from</h2>
+<p>Every listing records where its information came from and the date it was last checked. You can see both at the bottom of each place&rsquo;s page. Listings we have not been able to confirm are marked <span class="unconf">Unconfirmed</span> and left on the map rather than hidden, so you can judge for yourself and call ahead. Hours, seasons, and whether a place is even open this year all change, so treat everything here as a starting point and confirm before you drive out.</p>
+<p>What a place shows as ready this month comes from typical Gulf Coast harvest windows, which shift with the weather. The site does not rank places or call anything the best. It tells you what is out there and lets the map do the sorting.</p>
+<h2>Who runs it</h2>
+<p>It is built and kept up by one person on the Gulf Coast, by hand, in spare time. That is also why your help matters.</p>
+<h2>Add a place, or fix one</h2>
+<p>If you run a farm, market, dock, or farm store that belongs here, or you spot something out of date, please <a href="{P}/submit.html">add or update a listing</a>. It takes a couple of minutes, and a person reviews every submission. For a question, a correction, or a place we have missed, <a class="contactlink" data-u="barcus" data-d="high-shot.com" href="#">send an email</a>.</p>
+</div>
+'''.replace('{P}', PATH))
+about += tail()
+_ad = os.path.join(ROOT, 'about')
+os.makedirs(_ad, exist_ok=True)
+open(os.path.join(_ad, 'index.html'), 'w').write(about)
+urls.append(about_canon)
 
 
 # ----------------------------------------------- crawlable copy of the listing

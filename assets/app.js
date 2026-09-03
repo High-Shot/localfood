@@ -9,7 +9,7 @@
     ['citrus', 'Satsumas & citrus'], ['nuts', 'Pecans & peanuts'], ['upick', 'U-pick'], ['flowers', 'Flowers'],
     ['baked', 'Baked goods'], ['pantry', 'Jams, sauces & pantry'], ['plants', 'Plants']
   ];
-  var TYPES = [['farm', 'Farms'], ['market', 'Markets'], ['seafood', 'Seafood'], ['store', 'Farm stores']];
+  var TYPES = [['farm', 'Farms'], ['market', 'Farmers markets'], ['seafood', 'Seafood docks'], ['store', 'Farm stores']];
   var TYPE_LABEL = { farm: 'Farm', market: 'Farmers market', seafood: 'Seafood dock', store: 'Farm store' };
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
                 'August', 'September', 'October', 'November', 'December'];
@@ -196,7 +196,7 @@
     return '<button class="card t-' + l.type + (state.active === l.id ? ' is-active' : '') + '" data-id="' + esc(l.id) + '">' +
       '<span class="kind"><i class="sw"></i>' + esc(TYPE_LABEL[l.type]) + '</span>' +
       '<h3>' + esc(l.name) + '</h3>' +
-      '<p class="where">' + esc(l.city) + ', ' + esc(l.county) + ' Co.' + dist +
+      '<p class="where">' + esc(l.city) + ', ' + esc(l.county) + ' County, ' + esc(l.state || 'AL') + dist +
         (l.categories.indexOf('upick') > -1 ? '<span class="upick">U-pick</span>' : '') +
         (l.status !== 'live' ? '<span class="unconf">Unconfirmed</span>' : '') + '</p>' +
       '<div class="tags">' + tags + '</div>' +
@@ -277,7 +277,7 @@
       '<button class="back" id="back" type="button">&larr; All places</button>' +
       '<span class="kind"><i class="sw"></i>' + esc(TYPE_LABEL[l.type]) + '</span>' +
       '<h2>' + esc(l.name) + '</h2>' +
-      '<p class="where">' + esc(l.city) + ', ' + esc(l.county) + ' County' +
+      '<p class="where">' + esc(l.city) + ', ' + esc(l.county) + ' County, ' + esc(st) +
         (l.categories.indexOf('upick') > -1 ? '<span class="upick">U-pick</span>' : '') + '</p>' +
       (ready.length ? '<div class="notice ready"><b>Ready this month</b>' + esc(ready.join(', ')) + '</div>' : '') +
       (l.status !== 'live' ? '<div class="notice warn"><b>Unconfirmed</b>We have not confirmed this listing is current. Call or check their page before you drive out.</div>' : '') +
@@ -361,7 +361,7 @@
     var f = $('#filters');
     if (!f) return;
     var html = '';
-    [['all', 'All areas'], ['Baldwin|AL', 'Baldwin'], ['Mobile|AL', 'Mobile'], ['Escambia|AL', 'Escambia, AL'], ['Escambia|FL', 'Escambia, FL'], ['Santa Rosa|FL', 'Santa Rosa, FL']].forEach(function (p) {
+    [['all', 'All areas'], ['Baldwin|AL', 'Baldwin, AL'], ['Mobile|AL', 'Mobile, AL'], ['Escambia|AL', 'Escambia, AL'], ['Escambia|FL', 'Escambia, FL'], ['Santa Rosa|FL', 'Santa Rosa, FL']].forEach(function (p) {
       html += plate(p[1], 'data-county', p[0], state.county === p[0]);
     });
     TYPES.forEach(function (p) { html += plate(p[1], 'data-type', p[0], state.type === p[0]); });

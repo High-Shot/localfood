@@ -84,10 +84,11 @@ body.doc .shell { height: auto; min-height: 100dvh; }
   text-transform: uppercase; font-weight: 800; font-size: 33px; line-height: .9;
 }
 .band .wordmark a, .band h1 a { color: #fff; text-decoration: none; }
-.band .co {
-  display: block; font-size: 11px; font-weight: 600;
-  letter-spacing: .2em; margin-top: 4px; opacity: .88;
-  font-family: 'Big Shoulders Display', 'Public Sans', sans-serif;
+.band .brand { min-width: 0; }
+.band .tagline {
+  margin: 3px 0 0; font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12.5px; font-weight: 500; line-height: 1.2;
+  letter-spacing: .005em; color: #fff; opacity: .9;
 }
 .band .add {
   font-family: 'Big Shoulders Display', 'Public Sans', sans-serif;
@@ -139,6 +140,14 @@ body.doc .shell { height: auto; min-height: 100dvh; }
   box-shadow: 0 14px 40px -14px rgba(20,23,26,.38);
 }
 .grab { display: none; }
+.pfoot {
+  flex: 0 0 auto; border-top: 1px solid var(--rule);
+  background: rgba(255,255,255,.6);
+  padding: 9px 15px; display: flex; gap: 16px; align-items: center;
+  font-size: 12.5px;
+}
+.pfoot a { color: var(--head-deep); text-decoration: none; font-weight: 600; }
+.pfoot a:hover { text-decoration: underline; }
 
 .phead {
   flex: 0 0 auto; padding: 13px 15px 11px;
@@ -386,6 +395,10 @@ a.card { text-decoration: none; color: inherit; }
   color: var(--muted); font-size: 14.5px; margin: 0 0 18px;
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
+.prose { max-width: 68ch; }
+.prose h2 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; margin: 22px 0 5px; }
+.prose p { font-size: 15px; line-height: 1.6; margin: 0 0 12px; }
+.prose a { color: var(--head-deep); font-weight: 600; }
 .page .lede .kind { font-size: 11px; }
 .miniMap { height: 300px; border: 1px solid var(--rule); border-radius: 4px; margin: 18px 0; background: #e9eae5; }
 
@@ -430,8 +443,8 @@ footer.site .inner { max-width: 1600px; margin: 0 auto; }
 @media (max-width: 860px) {
   .band { padding: 9px 15px; }
   .band h1, .band .wordmark { font-size: 26px; }
-  .band .co { font-size: 10px; margin-top: 3px; }
-  .band .add { font-size: 13px; padding: 5px 10px; }
+  .band .tagline { font-size: 11px; margin-top: 2px; }
+  .band .add { font-size: 13px; padding: 5px 10px; white-space: normal; text-align: center; line-height: 1.1; }
 
   .panel {
     left: 0; right: 0; bottom: 0; top: auto; width: auto; height: var(--sheet);
