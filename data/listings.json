@@ -2287,7 +2287,7 @@
  {
   "id": "fresh-off-the-farm",
   "type": "farm",
-  "address": "3201 Bay Rd",
+  "address": "3201 Bay Road",
   "zip": "36582",
   "lat": 30.47222,
   "lng": -88.11395,
@@ -2304,27 +2304,27 @@
    "Watermelon"
   ],
   "categories": [
-   "fruit",
-   "vegetables"
+   "vegetables",
+   "fruit"
   ],
-  "description": "Vegetable farm in Theodore with peas, beans, tomatoes, and melons. U-pick by reservation only.",
+  "description": "U-pick and farm-fresh vegetables in Theodore, including tomatoes, peppers, okra, squash, several kinds of peas and beans, and watermelons. U-pick by reservation.",
   "phone": "(251) 623-1868",
-  "email": null,
+  "email": "bprobertscbi@bellsouth.net",
   "website": null,
   "facebook": null,
   "instagram": null,
   "tiktok": null,
   "hours": "7 am to 6 pm, seven days in season. U-pick by reservation.",
   "how_to_buy": [
-   "On-farm pickup",
-   "U-pick"
+   "U-pick",
+   "On-farm pickup"
   ],
   "sells_at": "",
   "certified_organic": false,
-  "status": "pending",
-  "source": "PickYourOwn.org Mobile-area directory (added 2014)",
-  "source_url": "https://pickyourown.org/ALmobile.htm",
-  "last_verified": "2026-09-02",
+  "status": "live",
+  "source": "PickYourOwn.org (Mobile area)",
+  "source_url": "https://pickyourown.org/bean-farms/ALmobile-beans.php",
+  "last_verified": "2026-09-03",
   "name": "Fresh Off The Farm",
   "county": "Mobile",
   "city": "Theodore",
@@ -3759,18 +3759,18 @@
   "how_to_buy": [
    "Farmers market"
   ],
-  "description": "Producer-only market in downtown Milton.",
+  "description": "Producer-only farmers market with locally grown fruits and vegetables in downtown Milton.",
   "phone": "",
   "email": "",
   "website": "",
   "facebook": "",
   "instagram": "",
   "tiktok": "",
-  "hours": "Seasonal",
+  "hours": "Seasonal, downtown Milton (confirm current dates)",
   "sells_at": "",
-  "status": "pending",
+  "status": "live",
   "source": "LocalHarvest",
-  "source_url": "",
+  "source_url": "https://www.localharvest.org/pace-fl/csa",
   "last_verified": "2026-09-03",
   "certified_organic": false
  },
@@ -3855,20 +3855,22 @@
   "county": "Mobile",
   "state": "AL",
   "city": "Grand Bay",
-  "address": "",
+  "address": "11652-A Wheatcroft Rd N",
   "zip": "",
   "lat": 30.47222,
   "lng": -88.34655,
   "pin_precision": "town",
   "products": [
-   "Meat"
+   "Beef"
   ],
-  "categories": [],
+  "categories": [
+   "beef"
+  ],
   "how_to_buy": [
-   "On-farm pickup"
+   "On-farm store"
   ],
-  "description": "Farm-to-table meat operation in Grand Bay; a second location was reported opening in Summerdale.",
-  "phone": "",
+  "description": "Family cattle farm in Grand Bay with about 150 head of Black Angus and an on-site USDA-inspected processing plant. Home to the 4-Bulls retail butcher shop selling farm-raised beef.",
+  "phone": "(251) 865-7748",
   "email": "",
   "website": "",
   "facebook": "",
@@ -3876,9 +3878,9 @@
   "tiktok": "",
   "hours": "",
   "sells_at": "",
-  "status": "pending",
-  "source": "Community suggestion (TikTok)",
-  "source_url": "https://www.tiktok.com/@barcusp/video/7681021925316939039",
+  "status": "live",
+  "source": "USDA FSIS establishment listing and local news (WKRG, 1819 News)",
+  "source_url": "https://www.fsis.usda.gov/inspection/fsis-inspected-establishments/mason-hills-llc",
   "last_verified": "2026-09-03",
   "certified_organic": false
  },
@@ -3965,10 +3967,14 @@
   "lat": 30.4877,
   "lng": -87.69971,
   "pin_precision": "town",
-  "products": [],
-  "categories": [],
+  "products": [
+   "Beef"
+  ],
+  "categories": [
+   "beef"
+  ],
   "how_to_buy": [],
-  "description": "Ranch in Summerdale. Products unconfirmed.",
+  "description": "Gulf Coast meat processor and butchery producing whole-muscle and processed meats for retail, wholesale and food service.",
   "phone": "",
   "email": "",
   "website": "",
@@ -3977,9 +3983,9 @@
   "tiktok": "",
   "hours": "",
   "sells_at": "",
-  "status": "pending",
-  "source": "Community suggestion (TikTok)",
-  "source_url": "https://www.tiktok.com/@barcusp/video/7681021925316939039",
+  "status": "live",
+  "source": "South Baldwin Chamber of Commerce",
+  "source_url": "https://business.southbaldwinchamber.com/list/Details/saltgrass-ranch-llc-4817623",
   "last_verified": "2026-09-03",
   "certified_organic": false
  },
@@ -4060,10 +4066,19 @@
   "lat": 30.40659,
   "lng": -87.6836,
   "pin_precision": "town",
-  "products": [],
-  "categories": [],
+  "products": [
+   "Corn",
+   "Honey",
+   "Eggs"
+  ],
+  "categories": [
+   "vegetables",
+   "honey",
+   "eggs",
+   "pantry"
+  ],
   "how_to_buy": [],
-  "description": "Seasonal farm in Foley. Products unconfirmed.",
+  "description": "Locally owned Foley farm known for sweet corn, sold by the ear or dozen, plus local honey, jams and jellies, and farm-fresh eggs.",
   "phone": "",
   "email": "",
   "website": "",
@@ -4072,9 +4087,9 @@
   "tiktok": "",
   "hours": "",
   "sells_at": "",
-  "status": "pending",
-  "source": "Community suggestion (TikTok)",
-  "source_url": "https://www.tiktok.com/@barcusp/video/7681021925316939039",
+  "status": "live",
+  "source": "Yelp and local business listings",
+  "source_url": "https://www.giftly.com/gift-card/krupinksi-farm-foley",
   "last_verified": "2026-09-03",
   "certified_organic": false
  }
