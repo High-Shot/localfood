@@ -69,7 +69,7 @@
   }
 
   function matches(l) {
-    if (state.county !== 'all' && l.county !== state.county) return false;
+    if (state.county !== 'all' && (l.county + '|' + (l.state || 'AL')) !== state.county) return false;
     if (state.type && l.type !== state.type) return false;
     if (state.hidePending && l.status !== 'live') return false;
     for (var i = 0; i < state.cats.length; i++) {
@@ -265,7 +265,8 @@
     }
 
     var exact = l.pin_precision === 'exact' && l.address;
-    var addr = exact ? (l.address + ', ' + l.city + ', AL ' + l.zip) : (l.city + ', AL');
+    var st = l.state || 'AL';
+    var addr = exact ? (l.address + ', ' + l.city + ', ' + st + ' ' + l.zip) : (l.city + ', ' + st);
     var dirs = exact ? 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(addr) : null;
     var ready = readyAt(l);
     var offers = l.products.length ? l.products.join(', ') : l.categories.map(catLabel).join(', ');
@@ -360,7 +361,7 @@
     var f = $('#filters');
     if (!f) return;
     var html = '';
-    [['all', 'Both counties'], ['Baldwin', 'Baldwin'], ['Mobile', 'Mobile']].forEach(function (p) {
+    [['all', 'All areas'], ['Baldwin|AL', 'Baldwin'], ['Mobile|AL', 'Mobile'], ['Escambia|AL', 'Escambia, AL'], ['Escambia|FL', 'Escambia, FL'], ['Santa Rosa|FL', 'Santa Rosa, FL']].forEach(function (p) {
       html += plate(p[1], 'data-county', p[0], state.county === p[0]);
     });
     TYPES.forEach(function (p) { html += plate(p[1], 'data-type', p[0], state.type === p[0]); });

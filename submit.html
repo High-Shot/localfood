@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Add or update a listing: Gulf Coast Farm</title>
-<meta name="description" content="Farms, farmers markets, seafood sellers, and farm stores in Mobile and Baldwin County: add your listing to Gulf Coast Farm for free.">
+<title>Add or update a farm: Gulf Coast Farm</title>
+<meta name="description" content="Farms, farmers markets, seafood sellers, and farm stores across the Gulf Coast: add your farm to Gulf Coast Farm for free.">
 <meta name="theme-color" content="#14603e">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=a9aadb62">
+<link rel="stylesheet" href="assets/style.css?v=8d81b8be">
 </head>
 <body class="doc">
 <div class="shell">
 <header class="band"><div class="inner">
-  <p class="wordmark"><a href="./">Gulf Coast Farm<span class="co">Mobile &amp; Baldwin County, Alabama</span></a></p>
+  <p class="wordmark"><a href="./">Gulf Coast Farm<span class="co">Gulf Coast</span></a></p>
   <a class="add" href="./">Back to the map &rarr;</a>
 </div></header>
 <main class="page">
@@ -61,7 +61,7 @@
       <div class="field"><label for="address">Street address</label><input type="text" id="address" name="address"></div>
       <div class="field"><label for="city">City</label><input type="text" id="city" name="city" required></div>
       <div class="field"><label for="county">County</label>
-        <select id="county" name="county"><option value="Baldwin">Baldwin</option><option value="Mobile">Mobile</option></select></div>
+        <select id="county" name="county"><option value="Baldwin, AL">Baldwin (AL)</option><option value="Mobile, AL">Mobile (AL)</option><option value="Escambia, AL">Escambia (AL)</option><option value="Escambia, FL">Escambia (FL)</option><option value="Santa Rosa, FL">Santa Rosa (FL)</option></select></div>
       <div class="field"><label>Show the exact address on the map?</label>
         <div class="checks" style="grid-template-columns:1fr">
           <label><input type="radio" name="pin_precision" value="exact" checked> Yes, show my address and a pin at it</label>
@@ -84,7 +84,7 @@
       <div class="field"><label for="contact_name">Your name</label><input type="text" id="contact_name" name="contact_name" required></div>
       <div class="field"><label for="contact_email">Your email</label><input type="email" id="contact_email" name="contact_email" required></div>
       <div class="field"><label for="notes">Anything else? <span class="hint">for removals or corrections, say what changed</span></label><textarea id="notes" name="notes"></textarea></div>
-      <div class="field"><label style="font-weight:400;display:flex;gap:8px;align-items:flex-start"><input type="checkbox" name="consent" required style="margin-top:4px"> I am authorized to list this business and agree that the information above may be shown publicly on this map.</label></div>
+      <div class="field"><p class="hint" style="margin:0">Anyone can suggest a farm or market. Everything except this "You" section is shown publicly. If it's your own business and you want an exact map pin, say so in the notes.</p></div>
     </fieldset>
 
     <button class="btn primary" type="submit" id="send">Send for review</button>

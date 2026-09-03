@@ -54,6 +54,9 @@ MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
 
 e = lambda s: html.escape(str(s if s is not None else ''), quote=True)
 slug = lambda s: re.sub(r'-+', '-', re.sub(r'[^a-z0-9]+', '-', str(s).lower())).strip('-')
+STATE_NAME = {'AL': 'Alabama', 'FL': 'Florida'}
+st = lambda l: l.get('state', 'AL')
+stn = lambda l: STATE_NAME.get(l.get('state', 'AL'), 'Alabama')
 
 listings = [l for l in json.load(open(os.path.join(ROOT, 'data/listings.json')))
             if l['status'] != 'retired' and l.get('lat')]
@@ -93,9 +96,9 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 <meta property="og:site_name" content="Gulf Coast Farm">
 <meta property="og:image" content="{BASE}/assets/og-image.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Map of Mobile and Baldwin County, Alabama with every local farm, market and seafood dock pinned">
+<meta property="og:image:alt" content="Map of the Gulf Coast with every local farm, market and seafood dock pinned">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="geo.region" content="US-AL"><meta name="geo.placename" content="Mobile and Baldwin County, Alabama">
+<meta name="geo.region" content="US-AL"><meta name="geo.placename" content="Gulf Coast, Alabama and Florida">
 <meta name="theme-color" content="#14603e">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {leaf}
@@ -104,17 +107,17 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 </head><body class="doc">
 <div class="shell">
 <header class="band"><div class="inner">
-<p class="wordmark"><a href="{PATH}/">Gulf Coast Farm<span class="co">Mobile &amp; Baldwin County, Alabama</span></a></p>
-<a class="add" href="{PATH}/submit.html">Add a listing &rarr;</a>
+<p class="wordmark"><a href="{PATH}/">Gulf Coast Farm<span class="co">Gulf Coast</span></a></p>
+<a class="add" href="{PATH}/submit.html">Add a farm &rarr;</a>
 </div></header>
 <main class="page">'''
 
 
 def tail():
     return f'''</main>
-<footer class="site"><div class="inner">Gulf Coast Farm is a free community project for Mobile and Baldwin County.
+<footer class="site"><div class="inner">Gulf Coast Farm is a free community project for the Gulf Coast.
 <a href="{PATH}/">Map of every listing</a> &middot; <a href="{PATH}/in-season/">In season now</a> &middot;
-<a href="{PATH}/submit.html">Add a listing</a></div></footer>
+<a href="{PATH}/submit.html">Add a farm</a></div></footer>
 </div>
 </body></html>'''
 
@@ -168,7 +171,7 @@ def hub(path, title, desc, h1, intro, rows, trail, extra_html=''):
     ld = [crumbs(trail), item_list(rows, h1),
           {'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': h1,
            'description': desc, 'url': canon,
-           'about': {'@type': 'Place', 'name': 'Mobile and Baldwin County, Alabama'}}]
+           'about': {'@type': 'Place', 'name': 'Gulf Coast (Alabama and Northwest Florida)'}}]
     body = head(title, desc, canon, ld)
     body += f'<h1 class="big">{e(h1)}</h1>\n<p class="lede">{intro}</p>\n'
     body += '<div class="cardgrid">' + ''.join(card(r) for r in rows) + '</div>\n'
@@ -200,11 +203,11 @@ for l in listings:
 
 for l in listings:
     exact = l['pin_precision'] == 'exact' and l['address']
-    addr = f"{l['address']}, {l['city']}, AL {l['zip']}" if exact else f"{l['city']}, AL"
-    title = f"{l['name']}: {TYPE_LABEL[l['type']]} in {l['city']}, Alabama"
+    addr = f"{l['address']}, {l['city']}, {st(l)} {l['zip']}" if exact else f"{l['city']}, {st(l)}"
+    title = f"{l['name']}: {TYPE_LABEL[l['type']]} in {l['city']}, {stn(l)}"
     offers = ', '.join(l['products']) if l['products'] else ''
     desc = (l['description'] or
-            f"{l['name']} is a {TYPE_LABEL[l['type']].lower()} in {l['city']}, {l['county']} County, Alabama.")[:155]
+            f"{l['name']} is a {TYPE_LABEL[l['type']].lower()} in {l['city']}, {l['county']} County, {stn(l)}.")[:155]
     canon = f"{BASE}/l/{l['id']}/"
 
     biz = {
@@ -213,10 +216,10 @@ for l in listings:
         'email': l['email'] or None,
         'address': {'@type': 'PostalAddress',
                     'streetAddress': l['address'] if exact else None,
-                    'addressLocality': l['city'], 'addressRegion': 'AL',
+                    'addressLocality': l['city'], 'addressRegion': st(l),
                     'postalCode': l['zip'] or None, 'addressCountry': 'US'},
         'geo': {'@type': 'GeoCoordinates', 'latitude': l['lat'], 'longitude': l['lng']} if exact else None,
-        'areaServed': [{'@type': 'AdministrativeArea', 'name': f"{l['county']} County, Alabama"}],
+        'areaServed': [{'@type': 'AdministrativeArea', 'name': f"{l['county']} County, {stn(l)}"}],
         'sameAs': [u for u in [l['website'], l['facebook'], l['instagram'], l['tiktok']] if u] or None,
     }
     # Products the place actually sells, so an assistant can answer "who sells X".
@@ -232,7 +235,7 @@ for l in listings:
     biz = {k: v for k, v in biz.items() if v is not None}
 
     trail = [('Gulf Coast Farm', BASE + '/'),
-             (f"{l['city']}, AL", f"{BASE}/in/{slug(l['city'])}/"),
+             (f"{l['city']}, {st(l)}", f"{BASE}/in/{slug(l['city'])}/"),
              (l['name'], canon)]
     pending = ('' if l['status'] == 'live' else
                '<div class="notice warn"><b>Unconfirmed</b>We have not confirmed this listing is current. '
@@ -292,11 +295,13 @@ L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div clas
 for city, rows in sorted(by_city.items()):
     rows = sorted(rows, key=lambda x: (not ready_now(x), x['status'] != 'live', x['name']))
     county = rows[0]['county']
+    state_ab = rows[0].get('state', 'AL')
+    state_name = STATE_NAME.get(state_ab, 'Alabama')
     kinds = sorted({TYPE_PLURAL[x['type']] for x in rows})
     kind_phrase = ', '.join(kinds[:-1]) + (' and ' + kinds[-1] if len(kinds) > 1 else kinds[0])
     n = len(rows)
-    title = f"{n} local food {'places' if n != 1 else 'place'} in {city}, Alabama"
-    desc = (f"{n} local food {'places' if n != 1 else 'place'} in {city}, {county} County, Alabama. "
+    title = f"{n} local food {'places' if n != 1 else 'place'} in {city}, {state_name}"
+    desc = (f"{n} local food {'places' if n != 1 else 'place'} in {city}, {county} County, {state_name}. "
             f"Includes {kind_phrase}. Addresses, hours and phone numbers. Free and community maintained.")[:158]
     ready_here = sorted({p for x in rows for p in ready_now(x)})
     intro = (f"All {n} farms, farmers markets, seafood docks and farm stores we can find in "
@@ -306,8 +311,8 @@ for city, rows in sorted(by_city.items()):
     other = [c for c in sorted(by_city) if c != city][:14]
     extra = ('<p class="browse"><b>Other towns</b> ' +
              ' &middot; '.join(f'<a href="{PATH}/in/{slug(c)}/">{e(c)}</a>' for c in other) + '</p>')
-    hub(f'in/{slug(city)}', title, desc, f'Local food in {city}, Alabama', intro, rows,
-        [('Gulf Coast Farm', BASE + '/'), (f'{city}, AL', f'{BASE}/in/{slug(city)}/')], extra)
+    hub(f'in/{slug(city)}', title, desc, f'Local food in {city}, {state_name}', intro, rows,
+        [('Gulf Coast Farm', BASE + '/'), (f'{city}, {state_ab}', f'{BASE}/in/{slug(city)}/')], extra)
 
 
 # --------------------------------------------------------------- product hubs
@@ -316,10 +321,10 @@ for cat, rows in sorted(by_cat.items()):
     rows = sorted(rows, key=lambda x: (not ready_now(x), x['status'] != 'live', x['name']))
     phrase, label, n = CAT_PHRASE.get(cat, CAT_LABEL.get(cat, cat)), CAT_LABEL.get(cat, cat), len(rows)
     towns = sorted({x['city'] for x in rows})
-    title = f"Where to buy {phrase} in Mobile and Baldwin County, Alabama"
-    desc = (f"{n} places selling {phrase} across Mobile and Baldwin County, Alabama, "
+    title = f"Where to buy {phrase} on the Gulf Coast"
+    desc = (f"{n} places selling {phrase} across the Gulf Coast of Alabama and Northwest Florida, "
             f"including {', '.join(towns[:4])}. Addresses, hours and phone numbers.")[:158]
-    intro = (f"{n} places in Mobile and Baldwin County offering <b>{e(label.lower())}</b>, "
+    intro = (f"{n} places on the Gulf Coast offering <b>{e(label.lower())}</b>, "
              f"in {e(', '.join(towns[:6]))}{' and elsewhere' if len(towns) > 6 else ''}. "
              "Community maintained and free to use.")
     other = [c for c in sorted(by_cat) if c != cat]
@@ -334,10 +339,10 @@ for cat, rows in sorted(by_cat.items()):
 season_rows = sorted([l for l in listings if ready_now(l)],
                      key=lambda x: (x['status'] != 'live', x['name']))
 prods = sorted({p for l in listings for p in ready_now(l)})
-title = f"What is in season right now in Mobile and Baldwin County, Alabama ({MONTH_NAME})"
-desc = (f"In {MONTH_NAME} on the Alabama Gulf Coast you can buy {', '.join(prods[:6])}. "
+title = f"What is in season right now on the Gulf Coast ({MONTH_NAME})"
+desc = (f"In {MONTH_NAME} on the Gulf Coast you can buy {', '.join(prods[:6])}. "
         f"{len(season_rows)} local farms, markets and seafood docks have something ready now.")[:158]
-intro = (f"On the Alabama Gulf Coast, <b>{MONTH_NAME}</b> brings {e(', '.join(prods))}. "
+intro = (f"On the Gulf Coast, <b>{MONTH_NAME}</b> brings {e(', '.join(prods))}. "
          f"{len(season_rows)} of our {len(listings)} listings have something ready right now. "
          "Harvest windows are estimates and shift with the weather, so call ahead.")
 extra = ('<p class="browse"><b>Browse by product</b> ' +
@@ -353,7 +358,7 @@ hub('in-season', title, desc, f'What is in season right now: {MONTH_NAME}', intr
 #            on boot, so bots and no-JS visitors get the same content users do.
 
 ordered = sorted(listings, key=lambda x: (not ready_now(x), x['status'] != 'live', x['name']))
-static = ('<h2 class="vh">Every farm, market and seafood dock in Mobile and Baldwin County</h2>'
+static = ('<h2 class="vh">Every farm, market and seafood dock on the Gulf Coast</h2>'
           + ''.join(card(l) for l in ordered)
           + '<nav class="browse"><b>Browse by town</b> '
           + ' &middot; '.join(f'<a href="{PATH}/in/{slug(c)}/">{e(c)}</a>' for c in sorted(by_city))
@@ -364,11 +369,11 @@ static = ('<h2 class="vh">Every farm, market and seafood dock in Mobile and Bald
 home_ld = [
     {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Gulf Coast Farm',
      'url': BASE + '/',
-     'description': 'Every local farm, farmers market, seafood dock and farm store in '
-                    'Mobile and Baldwin County, Alabama. Free and community maintained.',
+     'description': 'Every local farm, farmers market, seafood dock and farm store on '
+                    'the Gulf Coast of Alabama and Northwest Florida. Free and community maintained.',
      'inLanguage': 'en-US',
-     'about': {'@type': 'Place', 'name': 'Mobile and Baldwin County, Alabama'}},
-    item_list(ordered, 'Local farms, markets and seafood in Mobile and Baldwin County'),
+     'about': {'@type': 'Place', 'name': 'Gulf Coast (Alabama and Northwest Florida)'}},
+    item_list(ordered, 'Local farms, markets and seafood on the Gulf Coast'),
 ]
 
 idx = os.path.join(ROOT, 'index.html')
@@ -398,7 +403,7 @@ open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(
 open(os.path.join(ROOT, 'robots.txt'), 'w').write(
     f'User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n')
 open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps(
-    {'name': 'Gulf Coast Farm: Mobile & Baldwin', 'short_name': 'Gulf Coast', 'start_url': PATH + '/',
+    {'name': 'Gulf Coast Farm', 'short_name': 'Gulf Coast', 'start_url': PATH + '/',
      'display': 'standalone', 'background_color': '#f1f2ee', 'theme_color': '#14603e',
      'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
 
