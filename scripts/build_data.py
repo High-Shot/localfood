@@ -91,6 +91,7 @@ for m in SGA:
         name=m['name'].strip(),
         type=t,
         county=c,
+        state='AL',
         city=city,
         address=addr,
         zip=(m['zip'] or '')[:5],
@@ -122,7 +123,7 @@ AGURL='https://agi.alabama.gov/farmersmarket/wp-content/uploads/sites/9/2023/02/
 PYO='PickYourOwn.org Mobile-area directory'
 PYOURL='https://pickyourown.org/ALmobile.htm'
 def M(**k):
-    d=dict(id=None,type='farm',address='',zip='',lat=None,lng=None,pin_precision='exact',products=[],categories=[],description='',phone=None,email=None,website=None,facebook=None,instagram=None,tiktok=None,hours='',how_to_buy=[],sells_at='',certified_organic=False,status='live',source='',source_url='',last_verified=TODAY)
+    d=dict(id=None,type='farm',state='AL',address='',zip='',lat=None,lng=None,pin_precision='exact',products=[],categories=[],description='',phone=None,email=None,website=None,facebook=None,instagram=None,tiktok=None,hours='',how_to_buy=[],sells_at='',certified_organic=False,status='live',source='',source_url='',last_verified=TODAY)
     d.update(k); d['id']=slugify(d['name']); 
     if not d['categories']: d['categories']=cats(d['products'])
     return d
@@ -185,19 +186,21 @@ def geocode(q):
     return None,None
 
 TOWN={'Daphne':(30.6031,-87.9036),'Foley':(30.4066,-87.6836),'Loxley':(30.6188,-87.7533),'Point Clear':(30.4830,-87.9203),'Fairhope':(30.5230,-87.9033),'Orange Beach':(30.2944,-87.5736),'Mobile':(30.6944,-88.0431),'Prichard':(30.7388,-88.0789),'Saraland':(30.8207,-88.0706),'Elberta':(30.4144,-87.5978),'Silverhill':(30.5430,-87.7500),'Perdido':(31.0035,-87.6242),'Stapleton':(30.7405,-87.7897),'Lillian':(30.4133,-87.4413),'Robertsdale':(30.5538,-87.7119),'Grand Bay':(30.4750,-88.3420),'Wilmer':(30.8146,-88.3634),'Theodore':(30.5477,-88.1753),'Irvington':(30.4930,-88.2350)}
+STATE_NAME={'AL':'Alabama','FL':'Florida'}
 for L in listings:
     if L['lat'] is None:
+        stt=L.get('state','AL'); stnm=STATE_NAME.get(stt,'Alabama')
         if L['pin_precision']=='town' or not L['address']:
             L['pin_precision']='town'
             if L['city'] in TOWN: L['lat'],L['lng']=TOWN[L['city']]
             else:
-                time.sleep(1.1); L['lat'],L['lng']=geocode(f"{L['city']}, Alabama")
+                time.sleep(1.1); L['lat'],L['lng']=geocode(f"{L['city']}, {stnm}")
         else:
-            lat,lng=geocode(f"{L['address']}, {L['city']}, AL {L['zip']}")
+            lat,lng=geocode(f"{L['address']}, {L['city']}, {stt} {L['zip']}")
             if lat is None:
                 print('FALLBACK to town for',L['name'],file=sys.stderr)
                 L['pin_precision']='town'
-                lat,lng=geocode(f"{L['city']}, Alabama")
+                lat,lng=geocode(f"{L['city']}, {stnm}")
             L['lat'],L['lng']=lat,lng
         if L['lat']: L['lat'],L['lng']=round(L['lat'],5),round(L['lng'],5)
 
@@ -207,7 +210,7 @@ for L in listings:
     if L['id'] in seen:
         L['id']+='-'+slugify(L['city'])
     seen[L['id']]=1
-listings.sort(key=lambda x:(x['county'],x['name'].lower()))
+listings.sort(key=lambda x:(x.get('state','AL'),x['county'],x['name'].lower()))
 json.dump(listings,open('data/listings.json','w'),indent=1)
 print(len(listings),'listings;',sum(1 for l in listings if l['status']=='live'),'live;',sum(1 for l in listings if l['status']=='pending'),'pending')
 from collections import Counter
