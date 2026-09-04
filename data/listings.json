@@ -3653,36 +3653,38 @@
   "county": "Escambia",
   "state": "FL",
   "city": "Cantonment",
-  "address": "699 S Highway 95A",
+  "address": "699 South Highway 95-A",
   "zip": "32533",
-  "lat": 30.59493,
-  "lng": -87.30929,
+  "lat": 30.594931,
+  "lng": -87.309287,
   "pin_precision": "exact",
   "products": [
-   "Produce",
+   "Vegetables",
    "Fruit",
-   "Flowers"
+   "Baked goods",
+   "Plants"
   ],
   "categories": [
    "vegetables",
    "fruit",
-   "flowers"
+   "baked",
+   "plants"
   ],
   "how_to_buy": [
    "Farmers market"
   ],
-  "description": "Church-hosted market with seasonal produce, fruit, flowers, and local crafts.",
-  "phone": "",
+  "description": "Seasonal open-air market on the campus of Saint Monica s Episcopal Church, with local farmers, crafters and producers offering fresh produce, herbs, plants, baked goods and crafts.",
+  "phone": "(850) 937-0001",
   "email": "",
   "website": "",
   "facebook": "",
   "instagram": "",
   "tiktok": "",
-  "hours": "1st & 3rd Sat 8am-1pm",
+  "hours": "1st and 3rd Saturdays, 8 a.m. to 1 p.m., seasonal (confirm current dates).",
   "sells_at": "",
-  "status": "pending",
-  "source": "LocalHarvest",
-  "source_url": "",
+  "status": "live",
+  "source": "Florida Dept. of Agriculture (Buy Fresh From Florida) and AARP Local",
+  "source_url": "https://www.fdacs.gov/Consumer-Resources/Buy-Fresh-From-Florida/Community-Farmers-Markets/The-Market-at-Saint-Monica-s",
   "last_verified": "2026-09-03",
   "certified_organic": false
  },
@@ -4018,5 +4020,48 @@
   "source_url": "https://www.giftly.com/gift-card/krupinksi-farm-foley",
   "last_verified": "2026-09-03",
   "certified_organic": false
+ },
+ {
+  "id": "blue-basket-farms",
+  "name": "Blue Basket Farms",
+  "type": "farm",
+  "county": "Santa Rosa",
+  "city": "Milton",
+  "address": "8655 Hwy 89",
+  "zip": "32570",
+  "lat": 30.752317,
+  "lng": -87.093362,
+  "pin_precision": "exact",
+  "products": [
+   "Blueberries",
+   "Sunflowers",
+   "Vegetables",
+   "Honey"
+  ],
+  "categories": [
+   "berries",
+   "fruit",
+   "vegetables",
+   "honey",
+   "upick"
+  ],
+  "description": "Popular family-run u-pick farm north of Milton, on the former Lundy Blueberry land, specializing in blueberries and sunflowers with some u-pick squash, zucchini and green beans, plus local honey. Southern Highbush and Rabbiteye varieties.",
+  "phone": "(850) 623-0652",
+  "email": "",
+  "website": "https://www.bluebasketfarms.net/",
+  "facebook": "https://www.facebook.com/BlueBasketFarms/",
+  "instagram": "",
+  "tiktok": "",
+  "hours": "U-pick season roughly May to July; hours vary by day and crop, generally around 7 a.m. to 7 p.m., closed Sundays. Check Facebook or call before you go.",
+  "how_to_buy": [
+   "U-pick"
+  ],
+  "sells_at": "",
+  "certified_organic": false,
+  "status": "live",
+  "source": "Blue Basket Farms website and Facebook, and PickYourOwn.org",
+  "source_url": "https://www.bluebasketfarms.net/",
+  "last_verified": "2026-09-03",
+  "state": "FL"
  }
 ]
