@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2c5f49"/><circle cx="32" cy="27" r="11" fill="#e4741f"/><path d="M32 40c-9 0-15 7-15 12h30c0-5-6-12-15-12z" fill="#efeadc"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Gulf Coast Farm</title>
+  <desc id="desc">A white G on a green roadside guide sign, crossed by a blue Gulf wave.</desc>
+  <rect width="64" height="64" rx="5" fill="#14171a"/>
+  <rect x="3" y="3" width="58" height="58" rx="3" fill="#14603e"/>
+  <path d="M46 20.5C42.6 15.2 37.3 12 30.5 12 19 12 11 20.4 11 32s8 20 19.5 20c7 0 12.7-2.3 17-6.7V33H31"
+        fill="none" stroke="#f1f2ee" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M31 42c3-3 6-3 9 0s6 3 9 0"
+        fill="none" stroke="#8bc9dc" stroke-width="3.5" stroke-linecap="square"/>
+</svg>

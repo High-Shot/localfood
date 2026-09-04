@@ -70,7 +70,9 @@ ready_now = lambda l: [p for p in l['products'] if p in SEASON and MONTH_NUM in 
 # deploy does not needlessly bust caches.
 def asset_version():
     h = hashlib.sha256()
-    for name in ('assets/style.css', 'assets/app.js'):
+    for name in ('assets/style.css', 'assets/app.js', 'assets/icon.svg',
+                 'assets/favicon-32.png', 'assets/apple-touch-icon.png',
+                 'assets/icon-192.png', 'assets/icon-512.png', 'favicon.ico'):
         with open(os.path.join(ROOT, name), 'rb') as fh:
             h.update(fh.read())
     return h.hexdigest()[:8]
@@ -100,6 +102,10 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="geo.placename" content="Gulf Coast, Alabama, Florida, and Mississippi">
 <meta name="theme-color" content="#14603e">
+<link rel="icon" href="{PATH}/assets/icon.svg?v={VER}" type="image/svg+xml">
+<link rel="icon" href="{PATH}/assets/favicon-32.png?v={VER}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="{PATH}/assets/apple-touch-icon.png?v={VER}">
+<link rel="manifest" href="{PATH}/manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {leaf}
 <link rel="stylesheet" href="{PATH}/assets/style.css?v={VER}">
@@ -107,8 +113,10 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 </head><body class="doc">
 <div class="shell">
 <header class="band"><div class="inner">
-<div class="brand"><p class="wordmark"><a href="{PATH}/">Gulf Coast Farm</a></p>
-<p class="tagline">Local farms, markets, and seafood, mapped.</p></div>
+<div class="brand">
+<img class="brand-mark" src="{PATH}/assets/icon.svg?v={VER}" width="42" height="42" alt="" aria-hidden="true">
+<div class="brand-copy"><p class="wordmark"><a href="{PATH}/">Gulf Coast Farm</a></p>
+<p class="tagline">Local farms, markets, and seafood, mapped.</p></div></div>
 <a class="add" href="{PATH}/submit.html">Add a farm or market &rarr;</a>
 </div></header>
 <main class="page">'''
@@ -429,7 +437,9 @@ open(idx, 'w').write(s)
 for name in ('index.html', 'submit.html'):
     fp = os.path.join(ROOT, name)
     t = open(fp).read()
-    t = re.sub(r'(assets/(?:style\.css|app\.js))(\?v=[0-9a-f]+)?', rf'\1?v={VER}', t)
+    t = re.sub(
+        r'(assets/(?:style\.css|app\.js|icon\.svg|favicon-32\.png|apple-touch-icon\.png))(\?v=[0-9a-f]+)?',
+        rf'\1?v={VER}', t)
     open(fp, 'w').write(t)
 
 urls.append(BASE + '/submit.html')
@@ -447,7 +457,11 @@ open(os.path.join(ROOT, 'robots.txt'), 'w').write(
 open(os.path.join(ROOT, 'manifest.webmanifest'), 'w').write(json.dumps(
     {'name': 'Gulf Coast Farm', 'short_name': 'Gulf Coast', 'start_url': PATH + '/',
      'display': 'standalone', 'background_color': '#f1f2ee', 'theme_color': '#14603e',
-     'icons': [{'src': 'assets/icon.svg', 'sizes': 'any', 'type': 'image/svg+xml'}]}, indent=1))
+     'icons': [
+         {'src': f'assets/icon.svg?v={VER}', 'sizes': 'any', 'type': 'image/svg+xml'},
+         {'src': f'assets/icon-192.png?v={VER}', 'sizes': '192x192', 'type': 'image/png', 'purpose': 'any maskable'},
+         {'src': f'assets/icon-512.png?v={VER}', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'any maskable'},
+     ]}, indent=1))
 
 print(f'{len(listings)} listings, {len(by_city)} town pages, {len(by_cat)} product pages, '
       f'1 in-season page. Sitemap {len(set(urls))} urls. Domain {DOMAIN}, assets v{VER}')

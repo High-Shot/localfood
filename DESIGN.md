@@ -79,6 +79,18 @@ Two families, each with one job.
 Fixed scale, never fluid: wordmark 33/26px, month 26/20px, detail h2 23px, page
 h1 31/25px, card h3 16.5/16px, body 16px, secondary 13px, labels 10.5px.
 
+## Brand mark
+
+The mark is a compact roadside guide sign: an ink keyline, guide-green field,
+and a paper-white `G`. A single Gulf-blue wave crosses the lower counter. It is
+geometric enough to remain legible at favicon size and avoids the farm-category
+cliches this system rejects.
+
+The mark sits to the left of the live-text wordmark at 42px on desktop and 34px
+on phones. Keep the name and tagline as HTML rather than baking them into an
+image. Red never appears in the mark because it remains reserved for the
+ready-this-month signal.
+
 ## Composition
 
 The map is the page. Everything else floats on it.

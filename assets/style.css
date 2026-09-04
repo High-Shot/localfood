@@ -84,7 +84,13 @@ body.doc .shell { height: auto; min-height: 100dvh; }
   text-transform: uppercase; font-weight: 800; font-size: 33px; line-height: .9;
 }
 .band .wordmark a, .band h1 a { color: #fff; text-decoration: none; }
-.band .brand { min-width: 0; }
+.band .brand {
+  min-width: 0; display: flex; align-items: center; gap: 10px;
+}
+.band .brand-mark {
+  width: 42px; height: 42px; flex: 0 0 42px; display: block;
+}
+.band .brand-copy { min-width: 0; }
 .band .tagline {
   margin: 3px 0 0; font-family: 'Public Sans', system-ui, sans-serif;
   font-size: 12.5px; font-weight: 500; line-height: 1.2;
@@ -449,6 +455,8 @@ footer.site .inner { max-width: 1600px; margin: 0 auto; }
 @media (max-width: 860px) {
   .band { padding: 9px 15px; }
   .band h1, .band .wordmark { font-size: 26px; }
+  .band .brand { gap: 8px; }
+  .band .brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
   .band .tagline { font-size: 11px; margin-top: 2px; }
   .band .add { font-size: 13px; padding: 5px 10px; white-space: normal; text-align: center; line-height: 1.1; }
 
@@ -482,4 +490,13 @@ footer.site .inner { max-width: 1600px; margin: 0 auto; }
   .detail { padding: 10px 14px 24px; }
   .page { padding: 20px 15px 52px; }
   .page .big { font-size: 25px; }
+}
+
+@media (max-width: 360px) {
+  .band .inner { gap: 8px; }
+  .band .brand { gap: 7px; }
+  .band .brand-mark { width: 30px; height: 30px; flex-basis: 30px; }
+  .band h1, .band .wordmark { font-size: 22px; white-space: nowrap; }
+  .band .tagline { font-size: 10px; line-height: 1.15; }
+  .band .add { font-size: 12px; padding: 5px 8px; }
 }
