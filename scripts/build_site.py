@@ -289,7 +289,7 @@ for l in listings:
 <script>
 var m=L.map('mini',{{scrollWheelZoom:false}}).setView([{l['lat']},{l['lng']}],{13 if exact else 10});
 L.tileLayer('{TILES}',{{maxZoom:19,attribution:'{TILE_ATTR}'}}).addTo(m);
-L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div class="dot {e(l['type'])} {'' if l['status'] == 'live' else 'unconfirmed'}"></div>',iconSize:[16,16],iconAnchor:[8,8]}})}}).addTo(m);
+L.marker([{l['lat']},{l['lng']}],{{icon:L.divIcon({{className:'',html:'<div class="dot {e(l['type'])} {'' if l['status'] == 'live' else 'unconfirmed'}"></div>',iconSize:[16,16],iconAnchor:[8,8]}}),title:{json.dumps(l['name'])}}}).addTo(m);
 </script>
 '''
     page += tail()

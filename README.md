@@ -12,7 +12,7 @@ The vendor form has no backend on GitHub Pages. With `SUBMIT_URL` empty in `subm
 index.html            map app (search, filters, near me, detail sheet)
 submit.html           vendor form: add / update / remove a listing
 assets/               style.css, app.js, icon.svg
-data/listings.json    the directory (141 listings across eight counties)
+data/listings.json    the directory (161 listings across eight counties)
 l/<id>/index.html     one static page per listing for Google (generated)
 functions/api/submit.js   Cloudflare Pages Function -> Airtable "Submissions"
 scripts/build_data.py     rebuilds the seed JSON from public sources (one-time)

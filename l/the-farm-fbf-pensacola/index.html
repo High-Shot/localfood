@@ -47,14 +47,14 @@
 </div>
 <section class="more">
 <h2>More near Pensacola</h2>
-<div class="cardgrid"><a class="card t-market" href="/l/palafox-market/"><span class="kind"><i class="sw"></i>Farmers market</span><h3>Palafox Market</h3><p class="where">Pensacola, Escambia County, FL</p><div class="tags"><span class="tag muted">Vegetables</span><span class="tag muted">Fruit</span></div><p class="hours">Saturdays 9 a.m. to 2 p.m., year round</p></a></div>
+<div class="cardgrid"><a class="card t-market" href="/l/palafox-market/"><span class="kind"><i class="sw"></i>Farmers market</span><h3>Palafox Market</h3><p class="where">Pensacola, Escambia County, FL</p><div class="tags"><span class="tag muted">Vegetables</span><span class="tag muted">Fruit</span></div><p class="hours">Saturdays 9 a.m. to 2 p.m., year round</p></a><a class="card t-market" href="/l/sunday-market-on-palafox/"><span class="kind"><i class="sw"></i>Farmers market</span><h3>Sunday Market on Palafox</h3><p class="where">Pensacola, Escambia County, FL</p><div class="tags"><span class="tag muted">Vegetables</span><span class="tag muted">Fruit</span></div><p class="hours">Sundays 11:30 a.m. to 3:30 p.m.</p></a><a class="card t-store" href="/l/baileys-produce-nursery/"><span class="kind"><i class="sw"></i>Farm store</span><h3>Bailey&#x27;s Produce &amp; Nursery</h3><p class="where">Pensacola, Escambia County, FL</p><div class="tags"><span class="tag muted">Vegetables</span><span class="tag muted">Fruit</span></div><p class="hours">Open year-round; check the website for current hours.</p></a><a class="card t-seafood" href="/l/joe-pattis-seafood/"><span class="kind"><i class="sw"></i>Seafood dock</span><h3>Joe Patti&#x27;s Seafood</h3><p class="where">Pensacola, Escambia County, FL</p><div class="tags"><span class="tag">Saltwater Shrimp</span></div><p class="hours">Sunday through Wednesday 8 a.m. to 6 p.m.; Thursday through Saturday 8 a.m. to 7 p.m.</p></a><a class="card t-seafood" href="/l/marias-fresh-seafood-market/"><span class="kind"><i class="sw"></i>Seafood dock</span><h3>Maria&#x27;s Fresh Seafood Market</h3><p class="where">Pensacola, Escambia County, FL</p><div class="tags"><span class="tag">Saltwater Shrimp</span></div><p class="hours">Open daily; check the website or call for current hours.</p></a></div>
 <p class="browse"><a href="/in/pensacola/">Everything in Pensacola</a> &middot; <a href="/in-season/">What is ready in September</a></p>
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 var m=L.map('mini',{scrollWheelZoom:false}).setView([30.46895,-87.30425],13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(m);
-L.marker([30.46895,-87.30425],{icon:L.divIcon({className:'',html:'<div class="dot market "></div>',iconSize:[16,16],iconAnchor:[8,8]})}).addTo(m);
+L.marker([30.46895,-87.30425],{icon:L.divIcon({className:'',html:'<div class="dot market "></div>',iconSize:[16,16],iconAnchor:[8,8]}),title:"The Farm (Flora-Bama Farms)"}).addTo(m);
 </script>
 </main>
 <footer class="site"><div class="inner">Gulf Coast Farm is a free community project for the Gulf Coast.
