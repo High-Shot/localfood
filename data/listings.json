@@ -896,7 +896,8 @@
       "fruit",
       "honey",
       "pantry",
-      "upick"
+      "upick",
+      "herbs"
     ],
     "description": "U-pick blueberries and muscadines with a year-round farm store: brown eggs, honey from hives on the farm, preserves, hot sauce, ice cream, and home-grown produce. Four miles west of the Lillian bridge on Highway 98.",
     "phone": "(251) 962-2500",
@@ -2104,7 +2105,8 @@
       "pantry",
       "plants",
       "pork",
-      "vegetables"
+      "vegetables",
+      "herbs"
     ],
     "description": "The City of Semmes understands the importance of providing a place for the community to find local producers and for these producers to be able to sell. We have Farmer's Markets for this reason.",
     "phone": "(251) 300-0259",
@@ -2169,7 +2171,8 @@
       "eggs",
       "fruit",
       "pantry",
-      "vegetables"
+      "vegetables",
+      "herbs"
     ],
     "description": "Cluck & Crumb Porch Pantry is a small, homegrown Alabama farm and cottage food business built on tradition, resilience, and a whole lot of heart. What started as a backyard garden and a few animals has grown into a working farm focused on providing fresh, affordable, chemical-free food to our local community. I was raised learning how to make something out of nothing—growing food, caring for animals, and preserving what we had. Today, I carry those same values into everything I do. We raise chickens and ducks, grow seasonal produce, and create handmade pantry goods like baked items, preserves, and natural fertilizer products using what we produce right here on our land. Everything is made in compliance with Alabama cottage food laws and operates under a registered LLC, so while it’s rooted in old-fashioned ways, it’s built to grow and serve our community the right way. My goal is simple:",
     "phone": "(251) 513-0723",
@@ -3151,7 +3154,8 @@
       "fruit",
       "pantry",
       "plants",
-      "vegetables"
+      "vegetables",
+      "herbs"
     ],
     "description": "Sweet Martha's Family Farmacy is a Black owned organic medicinal herb farm and community healing space rooted in Southern tradition, family legacy and the wisdom passed down through generations. I grow, harvest and prepare small batch herbal remedies with the same care my ancestors used in their gardens and kitchens. I specialize in organically grown medicinal herbs, heirloom seeds, handcrafted teas, salves, tinctures and seasonal wellness products. My farm operates seasonally, with peak availability from March through November and online ordering is available for select products year round. Visitors can find us at the Farmacy, at the Airing of the Quilts festival or at local markets, where I share not only God's but also the stories behind them, from Gee's Bend quilting transmission to herbal practices that shaped my family's way of caring for one another. At Sweet Martha's we believe h",
     "phone": "(475) 280-8897",
@@ -3975,7 +3979,8 @@
       "Herbs"
     ],
     "categories": [
-      "vegetables"
+      "vegetables",
+      "herbs"
     ],
     "how_to_buy": [],
     "description": "Produce farm in Silverhill; lettuce and other produce.",
@@ -5984,7 +5989,8 @@
       "beef",
       "pork",
       "baked",
-      "pantry"
+      "pantry",
+      "herbs"
     ],
     "description": "Community farm store and nursery with seasonal plants, farm foods and locally made goods.",
     "phone": "",
@@ -6531,7 +6537,8 @@
       "Herbs"
     ],
     "categories": [
-      "vegetables"
+      "vegetables",
+      "herbs"
     ],
     "description": "Hydroponic greenhouse farm in Loxley, formerly Craine Creek Farm. Grows lettuces, salad greens and herbs year-round in controlled-environment greenhouses, without pesticides. Over thirty lettuce varieties plus seasonal greens such as watercress, mizuna, tatsoi and chard. Sells direct from the farm, at the Coastal Alabama Farmers and Fishermens Market in Foley, and wholesale to restaurants and markets from Pensacola to New Orleans.",
     "phone": "2512696000",

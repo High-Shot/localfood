@@ -5,7 +5,7 @@
 
   var CATS = [
     ['beef', 'Beef'], ['pork', 'Pork'], ['chicken', 'Chicken'], ['lamb', 'Lamb'], ['eggs', 'Eggs'], ['dairy', 'Dairy'],
-    ['honey', 'Honey'], ['seafood', 'Seafood'], ['vegetables', 'Vegetables'], ['fruit', 'Fruit'], ['berries', 'Berries'],
+    ['honey', 'Honey'], ['seafood', 'Seafood'], ['vegetables', 'Vegetables'], ['herbs', 'Herbs'], ['fruit', 'Fruit'], ['berries', 'Berries'],
     ['citrus', 'Satsumas & citrus'], ['nuts', 'Pecans & peanuts'], ['upick', 'U-pick'], ['flowers', 'Flowers'],
     ['baked', 'Baked goods'], ['pantry', 'Jams, sauces & pantry'], ['plants', 'Plants']
   ];

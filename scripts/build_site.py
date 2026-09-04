@@ -26,7 +26,7 @@ TILE_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreet
 
 CAT_LABEL = {
     'beef': 'Beef', 'pork': 'Pork', 'chicken': 'Chicken', 'lamb': 'Lamb', 'eggs': 'Eggs', 'dairy': 'Dairy',
-    'honey': 'Honey', 'seafood': 'Seafood', 'vegetables': 'Vegetables', 'fruit': 'Fruit', 'berries': 'Berries',
+    'honey': 'Honey', 'seafood': 'Seafood', 'vegetables': 'Vegetables', 'herbs': 'Herbs', 'fruit': 'Fruit', 'berries': 'Berries',
     'citrus': 'Satsumas & citrus', 'nuts': 'Pecans & peanuts', 'upick': 'U-pick', 'flowers': 'Flowers',
     'baked': 'Baked goods', 'pantry': 'Jams, sauces & pantry', 'plants': 'Plants',
 }
@@ -34,7 +34,7 @@ CAT_LABEL = {
 CAT_PHRASE = {
     'beef': 'local beef', 'pork': 'local pork', 'chicken': 'pasture-raised chicken', 'lamb': 'local lamb',
     'eggs': 'farm fresh eggs', 'dairy': 'local dairy', 'honey': 'local honey', 'seafood': 'fresh Gulf seafood',
-    'vegetables': 'fresh local vegetables', 'fruit': 'local fruit', 'berries': 'local berries',
+    'vegetables': 'fresh local vegetables', 'herbs': 'fresh local herbs', 'fruit': 'local fruit', 'berries': 'local berries',
     'citrus': 'satsumas and citrus', 'nuts': 'pecans and peanuts', 'upick': 'u-pick fruit and vegetables',
     'flowers': 'fresh cut flowers', 'baked': 'local baked goods', 'pantry': 'local jams, sauces and pantry goods',
     'plants': 'plants and seedlings',
