@@ -3733,9 +3733,9 @@
   "city": "Navarre",
   "address": "7681 Northshore Dr",
   "zip": "32566",
-  "lat": 30.40198,
-  "lng": -86.87008,
-  "pin_precision": "town",
+  "lat": 30.40048,
+  "lng": -86.902563,
+  "pin_precision": "exact",
   "products": [
    "Honey"
   ],
@@ -3769,9 +3769,9 @@
   "city": "Grand Bay",
   "address": "11652-A Wheatcroft Rd N",
   "zip": "",
-  "lat": 30.47222,
-  "lng": -88.34655,
-  "pin_precision": "town",
+  "lat": 30.450824,
+  "lng": -88.317702,
+  "pin_precision": "exact",
   "products": [
    "Beef"
   ],
@@ -3805,9 +3805,9 @@
   "city": "Elberta",
   "address": "27611 Pecan Lane",
   "zip": "",
-  "lat": 30.41441,
-  "lng": -87.59815,
-  "pin_precision": "town",
+  "lat": 30.436434,
+  "lng": -87.552951,
+  "pin_precision": "exact",
   "products": [
    "Beef"
   ],
@@ -3913,9 +3913,9 @@
   "city": "Foley",
   "address": "3910 S McKenzie St",
   "zip": "",
-  "lat": 30.40659,
-  "lng": -87.6836,
-  "pin_precision": "town",
+  "lat": 30.368433,
+  "lng": -87.683303,
+  "pin_precision": "exact",
   "products": [
    "Vegetables",
    "Fruit",
