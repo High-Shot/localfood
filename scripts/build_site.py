@@ -54,7 +54,7 @@ MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
 
 e = lambda s: html.escape(str(s if s is not None else ''), quote=True)
 slug = lambda s: re.sub(r'-+', '-', re.sub(r'[^a-z0-9]+', '-', str(s).lower())).strip('-')
-STATE_NAME = {'AL': 'Alabama', 'FL': 'Florida'}
+STATE_NAME = {'AL': 'Alabama', 'FL': 'Florida', 'MS': 'Mississippi'}
 st = lambda l: l.get('state', 'AL')
 stn = lambda l: STATE_NAME.get(l.get('state', 'AL'), 'Alabama')
 
@@ -98,7 +98,7 @@ def head(title, desc, canon, extra_ld=None, noindex=False, leaflet=False):
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Map of the Gulf Coast with every local farm, market and seafood dock pinned">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="geo.region" content="US-AL"><meta name="geo.placename" content="Gulf Coast, Alabama and Florida">
+<meta name="geo.placename" content="Gulf Coast, Alabama, Florida, and Mississippi">
 <meta name="theme-color" content="#14603e">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {leaf}
@@ -179,7 +179,7 @@ def hub(path, title, desc, h1, intro, rows, trail, extra_html=''):
     ld = [crumbs(trail), item_list(rows, h1),
           {'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': h1,
            'description': desc, 'url': canon,
-           'about': {'@type': 'Place', 'name': 'Gulf Coast (Alabama and Northwest Florida)'}}]
+           'about': {'@type': 'Place', 'name': 'Gulf Coast (Alabama, Northwest Florida, and coastal Mississippi)'}}]
     body = head(title, desc, canon, ld)
     body += f'<h1 class="big">{e(h1)}</h1>\n<p class="lede">{intro}</p>\n'
     body += '<div class="cardgrid">' + ''.join(card(r) for r in rows) + '</div>\n'
@@ -253,7 +253,8 @@ for l in listings:
 
     # Nearby: same town first, then the rest of the county, so no page is an orphan.
     same_town = [x for x in by_city.get(l['city'], []) if x['id'] != l['id']][:5]
-    nearby = same_town or [x for x in listings if x['county'] == l['county'] and x['id'] != l['id']][:5]
+    nearby = same_town or [x for x in listings
+                           if x['county'] == l['county'] and st(x) == st(l) and x['id'] != l['id']][:5]
     cat_links = ' &middot; '.join(
         f'<a href="{PATH}/what/{c}/">{e(CAT_LABEL.get(c, c))}</a>' for c in l['categories'])
 
@@ -330,7 +331,7 @@ for cat, rows in sorted(by_cat.items()):
     phrase, label, n = CAT_PHRASE.get(cat, CAT_LABEL.get(cat, cat)), CAT_LABEL.get(cat, cat), len(rows)
     towns = sorted({x['city'] for x in rows})
     title = f"Where to buy {phrase} on the Gulf Coast"
-    desc = (f"{n} places selling {phrase} across the Gulf Coast of Alabama and Northwest Florida, "
+    desc = (f"{n} places selling {phrase} across coastal Alabama, Northwest Florida and the Mississippi Gulf Coast, "
             f"including {', '.join(towns[:4])}. Addresses, hours and phone numbers.")[:158]
     intro = (f"{n} places on the Gulf Coast offering <b>{e(label.lower())}</b>, "
              f"in {e(', '.join(towns[:6]))}{' and elsewhere' if len(towns) > 6 else ''}. "
@@ -369,15 +370,15 @@ about_ld = [crumbs([('Gulf Coast Farm', BASE + '/'), ('About', about_canon)]),
              'name': 'About Gulf Coast Farm', 'url': about_canon}]
 about = head('About Gulf Coast Farm',
              'How Gulf Coast Farm works, where it covers, and how every listing is sourced '
-             'and dated. A free, community-built map of local food in coastal Alabama and Northwest Florida.',
+             'and dated. A free, community-built map of local food across coastal Alabama, Northwest Florida and coastal Mississippi.',
              about_canon, about_ld)
 about += ('''<nav class="crumb"><a href="{P}/">All listings</a> &rsaquo; About</nav>
 <h1 class="big">About Gulf Coast Farm</h1>
-<p class="lede">A free map of where to buy food grown, raised, and caught close to home, across coastal Alabama and Northwest Florida.</p>
+<p class="lede">A free map of where to buy food grown, raised, and caught close to home, across coastal Alabama, Northwest Florida, and the Mississippi Gulf Coast.</p>
 <div class="prose">
 <p>Gulf Coast Farm is a map, not a store and not a delivery service. It shows farms, farmers markets, seafood docks, and farm stores: where each one is, when it is open, and how to get there. You find a place, then you go buy from it directly. Nothing is sold through this site, and there is no charge to be listed.</p>
 <h2>Where it covers</h2>
-<p>Coverage is stated as named counties, not a distance from wherever you happen to be standing, because the site does not track your location. Right now that is five counties: Mobile, Baldwin, and Escambia in Alabama, and Escambia and Santa Rosa in Florida. It started in Mobile and Baldwin and is working outward into the neighboring counties and the western Florida panhandle.</p>
+<p>Coverage is stated as named counties, not a distance from wherever you happen to be standing, because the site does not track your location. Right now that is eight counties: Mobile, Baldwin, and Escambia in Alabama; Escambia and Santa Rosa in Florida; and Hancock, Harrison, and Jackson in Mississippi. It started in Mobile and Baldwin and is working outward along the Gulf Coast.</p>
 <h2>Where the listings come from</h2>
 <p>Every listing records where its information came from and the date it was last checked. You can see both at the bottom of each place&rsquo;s page. Listings we have not been able to confirm are marked <span class="unconf">Unconfirmed</span> and left on the map rather than hidden, so you can judge for yourself and call ahead. Hours, seasons, and whether a place is even open this year all change, so treat everything here as a starting point and confirm before you drive out.</p>
 <p>What a place shows as ready this month comes from typical Gulf Coast harvest windows, which shift with the weather. The site does not rank places or call anything the best. It tells you what is out there and lets the map do the sorting.</p>
@@ -411,9 +412,9 @@ home_ld = [
     {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Gulf Coast Farm',
      'url': BASE + '/',
      'description': 'Every local farm, farmers market, seafood dock and farm store on '
-                    'the Gulf Coast of Alabama and Northwest Florida. Free and community maintained.',
+                    'coastal Alabama, Northwest Florida and the Mississippi Gulf Coast. Free and community maintained.',
      'inLanguage': 'en-US',
-     'about': {'@type': 'Place', 'name': 'Gulf Coast (Alabama and Northwest Florida)'}},
+     'about': {'@type': 'Place', 'name': 'Gulf Coast (Alabama, Northwest Florida, and coastal Mississippi)'}},
     item_list(ordered, 'Local farms, markets and seafood on the Gulf Coast'),
 ]
 

@@ -1,4 +1,4 @@
-/* Gulf Coast Farm: Mobile + Baldwin County.
+/* Gulf Coast Farm: coastal Alabama, Northwest Florida, and coastal Mississippi.
    Map-first. Plain JS, Leaflet, one JSON file, no build step. */
 (function () {
   'use strict';
@@ -11,6 +11,7 @@
   ];
   var TYPES = [['farm', 'Farms'], ['market', 'Farmers markets'], ['seafood', 'Seafood docks'], ['store', 'Farm stores']];
   var TYPE_LABEL = { farm: 'Farm', market: 'Farmers market', seafood: 'Seafood dock', store: 'Farm store' };
+  var STATE_LABEL = { AL: 'Alabama', FL: 'Florida', MS: 'Mississippi' };
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
                 'August', 'September', 'October', 'November', 'December'];
 
@@ -76,7 +77,7 @@
     }
     if (state.season && l.products.indexOf(state.season) === -1) return false;
     if (state.q) {
-      var hay = [l.name, l.city, l.county, l.description, l.products.join(' '),
+      var hay = [l.name, l.city, l.county, l.state, STATE_LABEL[l.state], l.description, l.products.join(' '),
                  l.categories.join(' '), TYPE_LABEL[l.type]].join(' ').toLowerCase();
       var w = state.q.toLowerCase().split(/\s+/);
       for (var j = 0; j < w.length; j++) if (w[j] && hay.indexOf(w[j]) === -1) return false;

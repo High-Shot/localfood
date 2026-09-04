@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Primary: a resident of Mobile or Baldwin County, Alabama who sources food locally on a
+Primary: a Gulf Coast resident in the covered Alabama, Florida, or Mississippi counties who sources food locally on a
 recurring basis. Not a one-time tourist and not a weekend-outing planner. They are
 re-deciding, most weeks, where to get eggs, beef, shrimp, honey, satsumas, or produce, and
 they already know some of the answers. They arrive on a phone, often the night before or the
@@ -22,20 +22,20 @@ store operators who submit, correct, or remove their own listing through `submit
 
 ## Product Purpose
 
-Put every farm, farmers market, seafood dock, and farm store in Mobile and Baldwin County on
+Put every farm, farmers market, seafood dock, and farm store in the eight covered Gulf Coast counties on
 one map, free, so a local can find and reach one without searching Facebook groups and stale
 directories. Success is the visitor leaving with a specific place, its hours or season, and a
 way to get there or call ahead.
 
 ## Positioning
 
-Comprehensiveness within two named counties, plus disclosed provenance. Every listing carries
+Comprehensiveness within named counties, plus disclosed provenance. Every listing carries
 its `source`, `source_url`, and `last_verified` date, and unverified entries are labeled
 rather than hidden. A national directory cannot truthfully claim either the coverage or the
 per-listing honesty at this geographic scale.
 
-Seafood is a first-class category, not an afterthought. Ten of the 81 listings are docks,
-boats, or oyster farms. This is a Gulf product, not a generic farm directory.
+Seafood is a first-class category, not an afterthought. Docks, boats, seafood markets, and
+oyster farms are covered alongside land-based producers. This is a Gulf product, not a generic farm directory.
 
 ## Operating Context
 
@@ -54,7 +54,7 @@ boats, or oyster farms. This is a Gulf product, not a generic farm directory.
 
 Confirmed functionality:
 - Search across name, city, description, products, categories, and type.
-- Filters: county (Baldwin, Mobile, both), type (farm, market, seafood, store), 18 product
+- Filters: type (farm, market, seafood, store), 18 product
   categories, in-season product, "near me" geolocation with distance sort.
 - Leaflet map over OpenStreetMap tiles, pins typed and styled by listing type, with a
   distinct treatment for unverified entries and for town-only pins.
@@ -72,15 +72,13 @@ Technical constraints:
 - `/l/<id>/` URL structure and the SEO/JSON-LD output of `scripts/build_site.py` are fixed by
   the user and must survive any redesign.
 
-Current data (81 listings, as of 2026-09-02): 54 farms, 11 farmers markets, 10 seafood,
-6 farm stores. 46 Baldwin, 35 Mobile. 70 live, 11 unverified. 77 exact pins, 4 town-only.
-78 have a description, 76 a phone, 40 hours, 34 a website.
-
-Undecided: whether coverage expands beyond Mobile and Baldwin County.
+Current data is maintained in `data/listings.json`. Coverage spans Mobile, Baldwin, and
+Escambia counties in Alabama; Escambia and Santa Rosa counties in Florida; and Hancock,
+Harrison, and Jackson counties in Mississippi.
 
 ## Brand Commitments
 
-- Name: Gulf Coast Farm. Scope line: "Mobile & Baldwin."
+- Name: Gulf Coast Farm. Scope is stated as the eight named counties on the About page.
 - Voice: plain, second person, unhedged, and willing to say what it does not know. Existing
   copy: "We have not confirmed this listing is current. Call or check their page before you
   drive out." Preserve that register.
@@ -90,7 +88,7 @@ Undecided: whether coverage expands beyond Mobile and Baldwin County.
 
 ## Evidence on Hand
 
-- `data/listings.json`: 81 real listings with real names, addresses, coordinates, phone
+- `data/listings.json`: real listings with names, addresses, coordinates, phone
   numbers, products, hours, and source attribution.
 - Sourced substantially from the Sweet Grown Alabama member directory and other public
   directories, with `source_url` retained per listing.
