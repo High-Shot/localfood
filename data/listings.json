@@ -4063,5 +4063,79 @@
   "source_url": "https://www.bluebasketfarms.net/",
   "last_verified": "2026-09-03",
   "state": "FL"
+ },
+ {
+  "id": "fidler-farms",
+  "name": "Fidler Farms",
+  "type": "farm",
+  "county": "Baldwin",
+  "city": "Silverhill",
+  "address": "15705 Harris Lane",
+  "zip": "36576",
+  "lat": 30.52372,
+  "lng": -87.755824,
+  "pin_precision": "exact",
+  "products": [
+   "Roasted/Boiled Peanuts"
+  ],
+  "categories": [
+   "nuts"
+  ],
+  "description": "Longtime Silverhill peanut farm known across Baldwin County for jumbo green peanuts and boiled peanuts, sold direct from the farm in season (roughly September to mid-November) and at area stores and markets.",
+  "phone": "",
+  "email": "",
+  "website": "",
+  "facebook": "",
+  "instagram": "",
+  "tiktok": "",
+  "hours": "Green and boiled peanuts in season, roughly September to mid-November. Call ahead.",
+  "how_to_buy": [
+   "On-farm pickup"
+  ],
+  "sells_at": "",
+  "certified_organic": false,
+  "status": "live",
+  "source": "WKRG (2024) and Alabama Farmers Federation",
+  "source_url": "https://alfafarmers.org/?p=14737",
+  "last_verified": "2026-09-03",
+  "state": "AL"
+ },
+ {
+  "id": "elberta-farmers-market",
+  "name": "Elberta Farmers Market",
+  "type": "market",
+  "county": "Baldwin",
+  "city": "Elberta",
+  "address": "",
+  "zip": "36530",
+  "lat": 30.42187,
+  "lng": -87.50142,
+  "pin_precision": "town",
+  "products": [
+   "Vegetables",
+   "Fruit",
+   "Flowers"
+  ],
+  "categories": [
+   "vegetables",
+   "fruit",
+   "flowers"
+  ],
+  "description": "Community farmers market in downtown Elberta on Highway 98, with local produce, flowers and foraged items. Saturday mornings, seasonal.",
+  "phone": "",
+  "email": "",
+  "website": "",
+  "facebook": "",
+  "instagram": "",
+  "tiktok": "",
+  "hours": "Saturdays 7:30 a.m. to noon, seasonal. Confirm current dates.",
+  "how_to_buy": [],
+  "sells_at": "",
+  "certified_organic": false,
+  "status": "live",
+  "source": "Elberta Alert (local) and Baldwin County growers list",
+  "source_url": "https://elbertaalert.synaps.media/elberta-farmers-market-totes-and-tees-are-back/",
+  "last_verified": "2026-09-03",
+  "state": "AL"
  }
 ]
