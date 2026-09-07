@@ -1,0 +1,67 @@
+# Guards against the committed generated pages silently going stale.
+#
+# The site is served from committed files on GitHub Pages (no build step at
+# deploy time). scripts/build_site.py regenerates the crawlable surface
+# (l/, in/, what/, in-season/, index.html, sitemap.xml, robots.txt, manifest).
+# This workflow re-runs that build and fails if the result differs from what is
+# committed, so a data or template change that was pushed without rebuilding is
+# caught in CI instead of quietly shipping stale pages.
+#
+# Two intentional non-determinism sources are handled:
+#   * sitemap.xml <lastmod> is date.today() and changes every day. We ignore the
+#     date but still fail on any change to the sitemap's URL SET.
+#   * The "in season this month" content depends on date.today().month. If the
+#     committed pages were built in a different month than the CI run, that
+#     content legitimately differs and this job will fail -- rebuild and commit.
+
+name: build-drift
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Regenerate the static surface
+        run: SITE_DOMAIN=gulfcoastfarm.com SITE_PATH= python3 scripts/build_site.py
+
+      - name: Fail if generated pages are out of date
+        run: |
+          set -euo pipefail
+
+          # sitemap.xml: <lastmod> is today's date and changes daily; ignore it
+          # but still catch changes to the set of URLs.
+          strip_lastmod() { sed -E 's#<lastmod>[^<]*</lastmod>##g' "$1"; }
+          if ! diff <(git show HEAD:sitemap.xml | sed -E 's#<lastmod>[^<]*</lastmod>##g') \
+                    <(strip_lastmod sitemap.xml) >/dev/null; then
+            echo "::error::sitemap.xml URL set is out of date."
+            echo "Run: SITE_DOMAIN=gulfcoastfarm.com SITE_PATH= python3 scripts/build_site.py, then commit."
+            diff <(git show HEAD:sitemap.xml | sed -E 's#<lastmod>[^<]*</lastmod>##g') \
+                 <(strip_lastmod sitemap.xml) || true
+            exit 1
+          fi
+          # Neutralize the harmless daily lastmod churn before the byte check.
+          git checkout -- sitemap.xml
+
+          # Everything else must be byte-identical to what is committed. Stage so
+          # newly generated (untracked) or deleted pages are caught too.
+          git add -A
+          if ! git diff --cached --exit-code; then
+            echo "::error::Generated pages are out of date."
+            echo "Run: SITE_DOMAIN=gulfcoastfarm.com SITE_PATH= python3 scripts/build_site.py, then commit the result."
+            exit 1
+          fi
+          echo "Generated pages are in sync with the source."
