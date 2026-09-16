@@ -34,10 +34,18 @@
   };
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var narrow = function () { return window.innerWidth <= 860; };
+  function debounce(fn, ms) {
+    var t;
+    return function () {
+      var self = this, args = arguments;
+      clearTimeout(t);
+      t = setTimeout(function () { fn.apply(self, args); }, ms);
+    };
+  }
 
   var state = {
     q: '', type: null, cats: [], season: null, near: null,
-    hidePending: false, active: null, hover: null, data: [], monthProducts: []
+    hidePending: false, filtersOpen: false, active: null, hover: null, data: [], monthProducts: []
   };
   var map, markers = {}, hereMarker = null, PANEL_SHELL = '';
 
@@ -72,8 +80,13 @@
   function matches(l) {
     if (state.type && l.type !== state.type) return false;
     if (state.hidePending && l.status !== 'live') return false;
-    for (var i = 0; i < state.cats.length; i++) {
-      if (l.categories.indexOf(state.cats[i]) === -1) return false;
+    // Categories are OR: a place matches if it has any one of the chosen kinds.
+    if (state.cats.length) {
+      var hit = false;
+      for (var i = 0; i < state.cats.length; i++) {
+        if (l.categories.indexOf(state.cats[i]) !== -1) { hit = true; break; }
+      }
+      if (!hit) return false;
     }
     if (state.season && l.products.indexOf(state.season) === -1) return false;
     if (state.q) {
@@ -85,8 +98,9 @@
     return true;
   }
 
-  // Ranked by whether you can actually go: something ready this month first,
-  // then confirmed listings, then alphabetical. Distance wins when located.
+  // Ranked by whether you can actually go: a name match on your search first,
+  // then something ready this month, then confirmed, then alphabetical.
+  // Distance wins when located.
   function filtered() {
     var out = state.data.filter(matches);
     if (state.near) {
@@ -94,8 +108,16 @@
       out.sort(function (a, b) { return a._d - b._d; });
       return out;
     }
-    out.forEach(function (l) { l._ready = readyAt(l); });
+    var ql = state.q ? state.q.toLowerCase() : '';
+    out.forEach(function (l) {
+      l._ready = readyAt(l);
+      if (ql) {
+        var n = l.name.toLowerCase();
+        l._nm = n.indexOf(ql) === 0 ? 2 : (n.indexOf(ql) > -1 ? 1 : 0);
+      } else { l._nm = 0; }
+    });
     out.sort(function (a, b) {
+      if (ql && b._nm !== a._nm) return b._nm - a._nm;
       if ((b._ready.length > 0) !== (a._ready.length > 0)) return b._ready.length - a._ready.length;
       if ((a.status === 'live') !== (b.status === 'live')) return a.status === 'live' ? -1 : 1;
       return a.name.localeCompare(b.name);
@@ -305,7 +327,6 @@
       '</div>';
 
     $('#back').addEventListener('click', backToList);
-    if (narrow()) wireGrab();
   }
 
   function backToList() {
@@ -329,7 +350,7 @@
     state.season = null; state.hidePending = false;
     var q = $('#q');
     if (q) { q.value = ''; q.parentElement.classList.remove('has-text'); }
-    buildSeason(); buildFilters(); renderList(true);
+    buildSeason(); buildFilters(); updateFilterMeta(); renderList(true);
   }
 
   /* --------------------------------------------------------------- chrome */
@@ -339,6 +360,17 @@
       '" aria-pressed="' + (pressed ? 'true' : 'false') + '">' + esc(label) + '</button>';
   }
 
+  // Filters button badge (type + categories) and the Clear-all affordance.
+  function updateFilterMeta() {
+    var t = $('#filterToggle');
+    if (t) {
+      var n = (state.type ? 1 : 0) + state.cats.length;
+      t.innerHTML = 'Filters' + (n ? '<span class="fbadge">' + n + '</span>' : '');
+    }
+    var c = $('#clearAll');
+    if (c) c.hidden = !(state.type || state.cats.length || state.season || state.q);
+  }
+
   function buildSeason() {
     var el = $('#seasonPlates');
     if (!el) return;
@@ -346,7 +378,12 @@
     var have = state.monthProducts.filter(function (p) {
       return state.data.some(function (l) { return l.products.indexOf(p) > -1; });
     });
-    if (!have.length) { el.innerHTML = ''; $('#seasonLede').textContent = 'Every farm, market and seafood dock we can find.'; return; }
+    if (!have.length) {
+      el.innerHTML = '';
+      $('#seasonLede').textContent = 'Every farm, market and seafood dock we can find.';
+      updateFilterMeta();
+      return;
+    }
     $('#seasonLede').innerHTML = '<b>In season now.</b> Tap one to filter.';
     el.innerHTML = have.map(function (p) { return plate(p, 'data-season', p, state.season === p, 'season'); }).join('');
     el.querySelectorAll('[data-season]').forEach(function (b) {
@@ -355,6 +392,7 @@
         buildSeason(); update();
       });
     });
+    updateFilterMeta();
   }
 
   function buildFilters() {
@@ -387,6 +425,7 @@
     });
     var ol = $('#offerLabel');
     if (ol) ol.textContent = 'What they offer' + (state.cats.length ? ' (' + state.cats.length + ')' : '');
+    updateFilterMeta();
   }
 
   function wireNear() {
@@ -420,45 +459,95 @@
 
   /* ------------------------------------------------------- the phone sheet */
 
-  var DETENTS = ['16dvh', '54dvh', '88dvh'], di = 1;
+  var DETENTS = [16, 58, 90], di = 1;
   function sheetIndex() { return di; }
   function setDetent(i) {
     di = Math.max(0, Math.min(2, i));
-    document.documentElement.style.setProperty('--sheet', DETENTS[di]);
+    document.documentElement.style.setProperty('--sheet', DETENTS[di] + 'dvh');
     setTimeout(function () { if (map) map.invalidateSize(); }, 300);
   }
-  function wireGrab() {
-    var grab = $('#grab');
-    if (!grab) return;
-    grab.addEventListener('click', function () { setDetent(di >= 2 ? 0 : di + 1); });
-    grab.addEventListener('keydown', function (ev) {
+
+  // The whole sheet header drags: grab handle or the season title. Track the
+  // finger live, then snap to the nearest detent. A tap on the grab cycles.
+  function wireSheet() {
+    var panel = $('#panel');
+    if (!panel) return;
+    var down = false, moved = false, onHandle = false, startY = 0, startH = 0, pid = null;
+    function handle(t) { return !!(t && t.classList && t.classList.contains('grab')); }
+    function zone(t) {
+      if (!t || !t.closest) return false;
+      if (handle(t)) return true;
+      return !!t.closest('.season');
+    }
+    panel.addEventListener('pointerdown', function (ev) {
+      if (!narrow() || !zone(ev.target)) return;
+      down = true; moved = false; onHandle = handle(ev.target);
+      startY = ev.clientY; startH = panel.offsetHeight; pid = ev.pointerId;
+      try { panel.setPointerCapture(pid); } catch (e) {}
+    });
+    panel.addEventListener('pointermove', function (ev) {
+      if (!down) return;
+      var dy = ev.clientY - startY;
+      if (!moved) { if (Math.abs(dy) < 6) return; moved = true; panel.style.transition = 'none'; }
+      ev.preventDefault();
+      var vh = window.innerHeight, h = Math.max(vh * 0.14, Math.min(vh * 0.92, startH - dy));
+      panel.style.height = h + 'px';
+    });
+    function end() {
+      if (!down) return;
+      down = false;
+      try { if (pid != null) panel.releasePointerCapture(pid); } catch (e) {}
+      pid = null;
+      if (!moved) { if (onHandle) setDetent(di >= 2 ? 0 : di + 1); return; }
+      moved = false;
+      panel.style.transition = '';
+      var frac = panel.offsetHeight / window.innerHeight * 100, best = 0, bd = 1e9;
+      for (var i = 0; i < DETENTS.length; i++) {
+        var d = Math.abs(DETENTS[i] - frac);
+        if (d < bd) { bd = d; best = i; }
+      }
+      panel.style.height = '';
+      setDetent(best);
+    }
+    panel.addEventListener('pointerup', end);
+    panel.addEventListener('pointercancel', end);
+    panel.addEventListener('keydown', function (ev) {
+      if (!handle(ev.target)) return;
       if (ev.key === 'ArrowUp') { setDetent(di + 1); ev.preventDefault(); }
       if (ev.key === 'ArrowDown') { setDetent(di - 1); ev.preventDefault(); }
-    });
-    var sy = null;
-    grab.addEventListener('pointerdown', function (ev) { sy = ev.clientY; grab.setPointerCapture(ev.pointerId); });
-    grab.addEventListener('pointerup', function (ev) {
-      if (sy === null) return;
-      var dy = ev.clientY - sy; sy = null;
-      if (dy < -40) setDetent(di + 1); else if (dy > 40) setDetent(di - 1);
     });
   }
 
   function wirePanel() {
-    wireGrab();
     var q = $('#q');
     if (q) {
+      var runSearch = debounce(function () { renderList(false); }, 180);
       q.addEventListener('input', function () {
         state.q = q.value.trim();
         q.parentElement.classList.toggle('has-text', !!state.q);
-        renderList(true);
+        updateFilterMeta();
+        runSearch();
       });
       $('#clearQ').addEventListener('click', function () {
         q.value = ''; state.q = '';
         q.parentElement.classList.remove('has-text');
-        renderList(true); q.focus();
+        updateFilterMeta(); renderList(false); q.focus();
       });
     }
+    var ft = $('#filterToggle');
+    if (ft) {
+      var fb = $('#filterBlock');
+      ft.setAttribute('aria-expanded', state.filtersOpen ? 'true' : 'false');
+      if (fb) fb.classList.toggle('open', state.filtersOpen);
+      ft.addEventListener('click', function () {
+        state.filtersOpen = !state.filtersOpen;
+        ft.setAttribute('aria-expanded', state.filtersOpen ? 'true' : 'false');
+        if (fb) fb.classList.toggle('open', state.filtersOpen);
+      });
+    }
+    var ca = $('#clearAll');
+    if (ca) ca.addEventListener('click', resetAll);
+    updateFilterMeta();
     wireNear();
   }
 
@@ -474,6 +563,7 @@
   function boot() {
     PANEL_SHELL = $('#panel').innerHTML;
     state.monthProducts = inSeasonProducts();
+    wireSheet();
 
     fetch('data/listings.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
@@ -485,7 +575,12 @@
         wirePanel();
         renderList(false);
         fitTo(state.data, 11);
-        window.addEventListener('resize', function () { if (!state.active) fitTo(filtered()); });
+        window.addEventListener('resize', debounce(function () {
+          if (state.active) return;
+          var ae = document.activeElement;
+          if (ae && ae.id === 'q') return;
+          fitTo(filtered());
+        }, 200));
 
         var id = new URLSearchParams(location.search).get('id');
         if (id) openDetail(id);

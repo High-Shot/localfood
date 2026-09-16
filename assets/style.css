@@ -29,7 +29,7 @@
   --head: #14603e;       /* highway guide green */
   --head-deep: #0d4b30;
 
-  --sheet: 54dvh;
+  --sheet: 58dvh;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
@@ -218,6 +218,31 @@ body.doc .shell { height: auto; min-height: 100dvh; }
 .near:hover:not(:disabled) { background: var(--head-deep); border-color: var(--head-deep); }
 .near[aria-pressed="true"] { background: var(--ready); border-color: var(--ready); }
 .near:disabled { opacity: .5; cursor: default; }
+
+/* ---------------------------------------------------------- filter toggle */
+/* Collapses the Type and category chips behind one button on phones. On
+   desktop the toggle is hidden and the block is always open. */
+.filterbar { display: none; }
+.filterblock { display: block; }
+.filtertoggle {
+  flex: 1 1 auto; font: inherit; font-size: 13px; font-weight: 600;
+  background: var(--card); color: var(--ink);
+  border: 1.5px solid var(--ink); border-radius: 3px; padding: 8px 12px;
+  cursor: pointer; text-align: left;
+}
+.filtertoggle::after { content: '\25BE'; float: right; opacity: .7; margin-left: 8px; }
+.filtertoggle[aria-expanded="true"] { background: var(--ink); color: #fff; }
+.filtertoggle[aria-expanded="true"]::after { content: '\25B4'; }
+.fbadge {
+  display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 6px;
+  background: var(--ready); color: #fff; border-radius: 9px;
+  font-size: 11px; font-weight: 700; text-align: center; line-height: 18px;
+}
+.clearall {
+  flex: 0 0 auto; font: inherit; font-size: 12.5px; font-weight: 600;
+  background: transparent; color: var(--head-deep); border: 0; cursor: pointer;
+  text-decoration: underline; padding: 8px 4px;
+}
 
 .count {
   flex: 0 0 auto;
@@ -490,6 +515,17 @@ footer.site .inner { max-width: 1600px; margin: 0 auto; }
   .detail { padding: 10px 14px 24px; }
   .page { padding: 20px 15px 52px; }
   .page .big { font-size: 25px; }
+
+  /* Collapsible filter panel: chips wrap so all are visible when open. */
+  .filterbar { display: flex; gap: 10px; align-items: center; margin-top: 9px; }
+  .filterblock { display: none; margin-top: 9px; }
+  .filterblock.open { display: block; }
+  .filterblock .plates {
+    flex-wrap: wrap; overflow: visible; padding-bottom: 0;
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .season { touch-action: none; }
+  .grab { padding: 10px 0 6px; }
 }
 
 @media (max-width: 360px) {
