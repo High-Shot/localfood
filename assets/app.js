@@ -321,9 +321,7 @@
         (l.certified_organic ? cell('Certified', 'USDA Organic') : '') +
       '</dl>' +
       '<p style="font-size:13.5px"><a href="submit.html?id=' + encodeURIComponent(l.id) + '&mode=update">Own this listing or see an error? Send an update.</a></p>' +
-      '<p class="fine">Source: ' + esc(l.source) + '. Last checked ' + esc(l.last_verified) +
-      '. Hours and availability change with the season; confirm before you go. ' +
-      '<a href="l/' + esc(l.id) + '/">Permanent link</a></p>' +
+      '<p class="fine"><a href="l/' + esc(l.id) + '/">Permanent link</a></p>' +
       '</div>';
 
     $('#back').addEventListener('click', backToList);

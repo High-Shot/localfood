@@ -286,7 +286,7 @@ for l in listings:
 </dl>
 {('<p class="browse"><b>Also listed under</b> ' + cat_links + '</p>') if cat_links else ''}
 <p><a href="{PATH}/submit.html?id={e(l['id'])}&mode=update">Own this listing or see an error? Send an update.</a></p>
-<p class="fine">Source: {e(l['source'])}. Last checked {e(l['last_verified'])}. Hours and availability change with the season; confirm before you go.</p>
+
 </div>
 <section class="more">
 <h2>More near {e(l['city'])}</h2>
@@ -388,7 +388,7 @@ about += ('''<nav class="crumb"><a href="{P}/">All listings</a> &rsaquo; About</
 <h2>Where it covers</h2>
 <p>Coverage is stated as named counties, not a distance from wherever you happen to be standing, because the site does not track your location. Right now that is eight counties: Mobile, Baldwin, and Escambia in Alabama; Escambia and Santa Rosa in Florida; and Hancock, Harrison, and Jackson in Mississippi. It started in Mobile and Baldwin and is working outward along the Gulf Coast.</p>
 <h2>Where the listings come from</h2>
-<p>Every listing records where its information came from and the date it was last checked. You can see both at the bottom of each place&rsquo;s page. Listings we have not been able to confirm are marked <span class="unconf">Unconfirmed</span> and left on the map rather than hidden, so you can judge for yourself and call ahead. Hours, seasons, and whether a place is even open this year all change, so treat everything here as a starting point and confirm before you drive out.</p>
+<p>Listings we have not been able to confirm are marked <span class="unconf">Unconfirmed</span> and left on the map rather than hidden, so you can judge for yourself and call ahead. Hours, seasons, and whether a place is even open this year all change, so treat everything here as a starting point and confirm before you drive out.</p>
 <p>What a place shows as ready this month comes from typical Gulf Coast harvest windows, which shift with the weather. The site does not rank places or call anything the best. It tells you what is out there and lets the map do the sorting.</p>
 <h2>Who runs it</h2>
 <p>It is built and kept up by one person on the Gulf Coast, by hand, in spare time. That is also why your help matters.</p>
